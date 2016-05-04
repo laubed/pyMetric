@@ -33,7 +33,7 @@ def run_cron():
     message = cursor.statusmessage
     cursor.close()
     database.commit()
-    return "{'error': '" + message + "'}"
+    return "{'message': '" + message + "'}"
 
 
 @app.route('/monitoring/api/v1.0/log_message/all/<int:max>', methods=['GET'])
@@ -101,7 +101,7 @@ def add_log():
         cursor.execute("INSERT INTO log_messages (Time, Origin, Message, Type) VALUES (%s,%s,%s,%s);", (time.time(), request.json["Origin"], request.json["Message"], request.json["Type"]));
         cursor.close()
         database.commit()
-        return "{'error': 'OK'}"
+        return "{'message': 'OK'}"
 
 
 if __name__ == '__main__':
