@@ -24,6 +24,14 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > * The third parameter describes the message type e.g. ERROR
 > * The last parameter ist the API endpoint e.g. monitoring.server.local:5000
 
+> #### run_cron.py ####
+> The run_log.py script runs the server side cron task via the RESTful API for deleting old entries in database etc.
+> Usage:
+>
+> `run_cron.py <API endpoint>`
+>
+> * The first parameter ist the API endpoint e.g. monitoring.server.local:5000
+
 ### RatseDashboard/web ###
 
 
