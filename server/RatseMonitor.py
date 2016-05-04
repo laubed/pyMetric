@@ -25,6 +25,17 @@ def not_found(error):
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
 
+@app.route('/monitoring/api/v1.0/cron')
+@crossdomain(origin="*", headers="Content-Type,Accept")
+def run_cron():
+    cursor = database.cursor()
+    cursor.execute("DELETE FROM log_messages WHERE Time < %s", (time.time() - DATABASE_DELETE_PERIOD,))
+    message = cursor.statusmessage
+    cursor.close()
+    database.commit()
+    return "{'error': '" + message + "'}"
+
+
 @app.route('/monitoring/api/v1.0/log_message/all/<int:max>', methods=['GET'])
 @crossdomain(origin='*', headers="Content-Type,Accept")
 def get_log_max(max):
