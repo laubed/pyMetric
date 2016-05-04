@@ -10,6 +10,8 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 
 
 ### RatseDashboard/client ###
+There are several client API scripts available to report data to the backend server. Use them on your clients.
+
 #### log_messages.py ####
 The log_messages.py script is a CLI for the log_messages API endpoint of the RESTful server backend. Use it in all your
 cronjobs / regular scripts to notify the backend.
