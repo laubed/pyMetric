@@ -13,4 +13,5 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 
 ### Contributors ###
 
-* 
+* Sören Uhrbach <souhrbach@gmail.com>
+* Daniel Laube <bitbucket@dlaube.de>
