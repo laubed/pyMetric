@@ -3,3 +3,4 @@ jinja2
 markupsafe
 werkzeug
 itsdangerous
+psycopg2
