@@ -2,7 +2,9 @@ from flask import Flask, jsonify, make_response
 
 app = Flask(__name__)
 
-from pyMetricServer.handler import *
+from pyMetricServer.handler.message import *
+from pyMetricServer.handler.system import *
+from pyMetricServer.handler.metric import *
 
 
 @app.errorhandler(400)

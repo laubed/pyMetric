@@ -1,13 +1,13 @@
 import time
 
-from pyMetricService.pymetriclib.decorators import crossdomain
+from pyMetricServer.system.decorators import crossdomain
 
-from pyMetricService import app
-from pyMetricService.config import *
-from pyMetricService.system.database import database
+from pyMetricServer import app
+from pyMetricServer.config import *
+from pyMetricServer.system.database import database
 
 
-@app.route('/monitoring/api/v1.0/cron')
+@app.route('/metric/api/v1.0/cron')
 @crossdomain(origin="*", headers="Content-Type,Accept")
 def run_cron():
     cursor = database.cursor()

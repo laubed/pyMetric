@@ -1,22 +1,22 @@
 import time
 
 from flask import request
-from pyMetricService.pymetriclib.decorators import crossdomain
+from pyMetricServer import app
+from pyMetricServer.system.database import database
 from werkzeug.exceptions import abort
 
-from pyMetricService import app
-from pyMetricService.system.database import database
+from pyMetricServer.system.decorators import crossdomain
 
 
-@app.route('/monitoring/api/v1.0/log_message/<string:maxentries>', methods=['GET'])
+@app.route('/metric/api/v1.0/message/<string:maxentries>', methods=['GET'])
 @crossdomain(origin='*', headers="Content-Type,Accept")
-def get_log_short(maxentries):
-    return get_log_full(0, time.time(), maxentries)
+def get_message_short(maxentries):
+    return get_message_long(0, time.time(), maxentries)
 
 
-@app.route('/monitoring/api/v1.0/log_message/<int:fromtime>/<int:totime>/<string:maxentries>', methods=['GET'])
+@app.route('/metric/api/v1.0/message/<int:fromtime>/<int:totime>/<string:maxentries>', methods=['GET'])
 @crossdomain(origin='*', headers="Content-Type,Accept")
-def get_log_full(fromtime, totime, maxentries):
+def get_message_long(fromtime, totime, maxentries):
     cursor = database.cursor()
 
     if maxentries != 0:
@@ -43,9 +43,9 @@ def get_log_full(fromtime, totime, maxentries):
     return data, 200, {'Content-Type': 'application/json'}
 
 
-@app.route('/monitoring/api/v1.0/log_message', methods=['POST'])
+@app.route('/metric/api/v1.0/message', methods=['POST'])
 @crossdomain(origin='*')
-def add_log():
+def add_message():
     print request.json
     if not request.json or not 'Origin' in request.json or not 'Message' in request.json or not 'Type' in request.json:
         abort(400)
