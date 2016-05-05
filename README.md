@@ -6,6 +6,7 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > * The client reporting scripts. Used to report data to the backend server.
 > * The web frontend. Displays data as a dashboard to the user.
 
+
 ### RatseDashboard/server ###
 
 
@@ -24,6 +25,7 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > * The third parameter describes the message type e.g. ERROR
 > * The last parameter ist the API endpoint e.g. monitoring.server.local:5000
 
+
 > #### run_cron.py ####
 > The run_log.py script runs the server side cron task via the RESTful API for deleting old entries in database etc.
 > Usage:
@@ -32,6 +34,7 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 >
 > * The first parameter ist the API endpoint e.g. monitoring.server.local:5000
 
+
 ### RatseDashboard/web ###
 
 
@@ -39,6 +42,15 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > * PostgreSQL server
 > * Python 2.7 with flask, jinja2, markupsafe, werkzeug, itsdangerous, psycopg2
 > * optional: web server (apache2,nginx,..) with wsgi module
+
+
+### Usage ###
+> . Make sure every prerequisites are fulfilled
+> . Rename config.py.dist into config.py
+> . Edit the config.py to match your auth credentials for the PostgreSQL database
+> . To run the server either setup your webserver to use the RatseMonitor.py as WSGI application or just run RatseMonitor.py to use the standalone server
+> . Use the client API scripts to insert data
+
 
 ### Contributors ###
 > * Sören Uhrbach <souhrbach@gmail.com>
