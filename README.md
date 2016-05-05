@@ -45,11 +45,11 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 
 
 ### Usage ###
-> . Make sure every prerequisites are fulfilled
-> . Rename config.py.dist into config.py
-> . Edit the config.py to match your auth credentials for the PostgreSQL database
-> . To run the server either setup your webserver to use the RatseMonitor.py as WSGI application or just run RatseMonitor.py to use the standalone server
-> . Use the client API scripts to insert data
+> 1. Make sure every prerequisites are fulfilled
+> 2. Rename config.py.dist into config.py
+> 3. Edit the config.py to match your auth credentials for the PostgreSQL database
+> 4. To run the server either setup your webserver to use the RatseMonitor.py as WSGI application or just run RatseMonitor.py to use the standalone server
+> 5. Use the client API scripts to insert data
 
 
 ### Contributors ###
