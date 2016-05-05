@@ -7,10 +7,10 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 > * The web frontend. Displays data as a dashboard to the user.
 
 
-### pyMetric/pyMetric ###
+### pyMetric/pyMetricServer ###
 
 
-### pyMetric/client ###
+### pyMetric/pyMetricClients ###
 > There are several client API scripts available to report data to the backend server. Use them on your clients.
 >
 > #### log_messages.py ####
@@ -35,7 +35,7 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 > * The first parameter ist the API endpoint e.g. monitoring.server.local:5000
 
 
-### pyMetric/web ###
+### pyMetric/pyMetricWeb ###
 
 
 ### Prerequisites ###
