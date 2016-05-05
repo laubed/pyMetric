@@ -7,7 +7,7 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 > * The web frontend. Displays data as a dashboard to the user.
 
 
-### pyMetric/server ###
+### pyMetric/pyMetric ###
 
 
 ### pyMetric/client ###
@@ -48,7 +48,7 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 > 1. Make sure every prerequisites are fulfilled
 > 2. Rename config.py.dist into config.py
 > 3. Edit the config.py to match your auth credentials for the PostgreSQL database
-> 4. To run the server either setup your webserver to use the pyMetricService.py as WSGI application or just run pyMetricService.py to use the standalone server
+> 4. To run the server either setup your webserver to use the pyMetricServer/pyMetric.py as WSGI application or just run pyMetricServer/pyMetric.py to use the standalone server
 > 5. Use the client API scripts to insert data
 
 
