@@ -1,16 +1,16 @@
-# RatseDashboard #
+# pyMetric #
 
-RatseDashboard is a local Server/Service Monitoring solution optimized for ease of use and reliability. It is based on 3 components:
+pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use and reliability. It is based on 3 components:
 
 > * The RESTful server backend written with flask in python (WSGI compliant / runs under apache2,nginx,...)
 > * The client reporting scripts. Used to report data to the backend server.
 > * The web frontend. Displays data as a dashboard to the user.
 
 
-### RatseDashboard/server ###
+### pyMetric/server ###
 
 
-### RatseDashboard/client ###
+### pyMetric/client ###
 > There are several client API scripts available to report data to the backend server. Use them on your clients.
 >
 > #### log_messages.py ####
@@ -35,7 +35,7 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > * The first parameter ist the API endpoint e.g. monitoring.server.local:5000
 
 
-### RatseDashboard/web ###
+### pyMetric/web ###
 
 
 ### Prerequisites ###
@@ -48,10 +48,10 @@ RatseDashboard is a local Server/Service Monitoring solution optimized for ease 
 > 1. Make sure every prerequisites are fulfilled
 > 2. Rename config.py.dist into config.py
 > 3. Edit the config.py to match your auth credentials for the PostgreSQL database
-> 4. To run the server either setup your webserver to use the RatseMonitor.py as WSGI application or just run RatseMonitor.py to use the standalone server
+> 4. To run the server either setup your webserver to use the pyMetricService.py as WSGI application or just run pyMetricService.py to use the standalone server
 > 5. Use the client API scripts to insert data
 
 
 ### Contributors ###
-> * Sören Uhrbach <souhrbach@gmail.com>
-> * Daniel Laube <bitbucket@dlaube.de>
+> * Sören Uhrbach <souhrbach@gmail.com> Frontend Developer
+> * Daniel Laube <bitbucket@dlaube.de> Backend Developer

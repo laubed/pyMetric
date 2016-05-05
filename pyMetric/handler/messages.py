@@ -1,10 +1,11 @@
+import time
+
 from flask import request
+from pyMetricService.pymetriclib.decorators import crossdomain
 from werkzeug.exceptions import abort
 
-from server import app
-from ratselib.decorators import crossdomain
-from system_database import database
-import time
+from pyMetricService import app
+from pyMetricService.system.database import database
 
 
 @app.route('/monitoring/api/v1.0/log_message/<string:maxentries>', methods=['GET'])

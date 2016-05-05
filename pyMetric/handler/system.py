@@ -1,8 +1,10 @@
-from server import app
-from ratselib.decorators import crossdomain
-from system_database import database
-from config import *
 import time
+
+from pyMetricService.pymetriclib.decorators import crossdomain
+
+from pyMetricService import app
+from pyMetricService.config import *
+from pyMetricService.system.database import database
 
 
 @app.route('/monitoring/api/v1.0/cron')
