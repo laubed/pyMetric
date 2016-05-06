@@ -4,3 +4,4 @@ markupsafe
 werkzeug
 itsdangerous
 psycopg2
+psutil
