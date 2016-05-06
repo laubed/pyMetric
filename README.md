@@ -74,3 +74,9 @@ There are several client API scripts available to report data to the backend ser
 ### Credit ###
 * Icons used in logo and graphics: [Octicons by Github](https://octicons.github.com/)
 * Font used in logo and graphics: [Roboto by Google](https://www.google.com/fonts/specimen/Roboto)
+* JavaScript/CSS Libraries:
+    * [Bootstrap by Twitter](https://github.com/twbs/bootstrap)
+    * [Chart.js](https://github.com/chartjs/Chart.js)
+    * [jQuery](https://github.com/jquery/jquery)
+    * [Knockout.js by Steven Sanderson](http://knockoutjs.com/)
+    * [Moment.js by Tim Wood, Iskren Chernev](http://momentjs.com/)
