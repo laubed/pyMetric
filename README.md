@@ -27,6 +27,16 @@ There are several client API scripts available to report data to the backend ser
 > * The last parameter ist the API endpoint e.g. monitoring.server.local:5000
 
 
+#### report_cpu.py ####
+> The report_cpu.py script reports the cpu usage to the metric API endpoint of the RESTful server backend. Use as often as you like to know cpu usage on your hardware
+> Usage:
+>
+> `report_cpu.py <Origin> <API endpoint>`
+>
+> * The first parameter describes the origin of the message (usually the IP or hostname of the server) e.g. 10.0.0.5
+> * The last parameter ist the API endpoint e.g. monitoring.server.local:5000
+
+
 #### run_cron.py ####
 > The run_log.py script runs the server side cron task via the RESTful API for deleting old entries in database etc.
 > Usage:
