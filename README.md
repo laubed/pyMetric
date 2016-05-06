@@ -1,4 +1,5 @@
-# pyMetric #
+![pyMetric](https://raw.githubusercontent.com/laubed/pyMetric/master/images/header_Scales.png)
+
 
 pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use and reliability. It is based on 3 components:
 
