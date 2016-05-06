@@ -1,73 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="generator"
-    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
-    <title>Ratse Dashboard</title>
+<head>
+    <title>pyMetric Dashboard</title>
     <script src="js/jquery.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/index.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/knockout.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
     <script src="bootstrap/js/bootstrap.js"></script>
-  </head>
-  <body>
-    <div class="" id="content">
-      <div class="col-md-6" id="content_left">
+</head>
+<body>
+<div class="" id="content">
+    <div class="col-md-6" id="content_left">
         <div class="panel panel-default">
-          <table class="table" id="table_messageLog">
-            <thead>
-              <tr>
-                <th>Zeitpunkt</th>
-                <th>Herkunft</th>
-                <th>Nachricht</th>
-                <th>Typ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="info">
-                <td>10:26:13</td>
-                <td>Client 6</td>
-                <td>Connected</td>
-                <td>Info</td>
-              </tr>
-              <tr class="warning">
-                <td>10:18:13</td>
-                <td>Client 9</td>
-                <td>High CPU Usage</td>
-                <td>Warning</td>
-              </tr>
-              <tr class="danger">
-                <td>10:22:13</td>
-                <td>Client 2</td>
-                <td>Connection Lost</td>
-                <td>Error</td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table" id="table_messageLog">
+                <thead>
+                <tr>
+                    <th>Zeitpunkt</th>
+                    <th>Herkunft</th>
+                    <th>Nachricht</th>
+                    <th>Typ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="info">
+                    <td>10:26:13</td>
+                    <td>Client 6</td>
+                    <td>Connected</td>
+                    <td>Info</td>
+                </tr>
+                <tr class="warning">
+                    <td>10:18:13</td>
+                    <td>Client 9</td>
+                    <td>High CPU Usage</td>
+                    <td>Warning</td>
+                </tr>
+                <tr class="danger">
+                    <td>10:22:13</td>
+                    <td>Client 2</td>
+                    <td>Connection Lost</td>
+                    <td>Error</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div style="clear: both"></div>
         <div id="lineCharts">
-          <div class="panel panel-default">
-            <canvas id="lChart1" class="chart"></canvas>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6" id="content_right">
-        <div class="panel panel-default">
-          <div class="row" id="doughnutCharts">
-            <div class="col-md-6 dChartBox" id="dChartBox1">
-              <canvas id="dChart1" class="chart"></canvas>
+            <div class="panel panel-default">
+                <canvas id="lChart1" class="chart"></canvas>
             </div>
-            <div class="col-md-6 dChartBox" id="dChartBox2">
-              <canvas id="dChart2" class="chart"></canvas>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </body>
+    <div class="col-md-6" id="content_right">
+        <div class="panel panel-default">
+            <div class="row" id="doughnutCharts">
+                <div class="col-md-6 dChartBox" id="dChartBox1">
+                    <canvas id="dChart1" class="chart"></canvas>
+                </div>
+                <div class="col-md-6 dChartBox" id="dChartBox2">
+                    <canvas id="dChart2" class="chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>
