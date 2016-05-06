@@ -90,5 +90,5 @@ $(document).ready(function(){
 });
 
 function addLog(){
-  $('#table_messageLog').append('<tr class="danger"><td>10:22:13</td><td>Client 2</td><td>Connection Lost</td><td>Error</td></tr>');
+  $('#message_table').append('<tr class="danger"><td>10:22:13</td><td>Client 2</td><td>Connection Lost</td><td>Error</td></tr>');
 }

@@ -20,21 +20,21 @@ def get_message_long(fromtime, totime, maxentries):
     cursor = database.cursor()
 
     if maxentries != 0:
-        cursor.execute("SELECT * FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC LIMIT %s;",
+        cursor.execute("SELECT Id, Time, Origin, Message, Type FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC LIMIT %s;",
                        (fromtime, totime, maxentries))
     else:
-        cursor.execute("SELECT * FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC;",
+        cursor.execute("SELECT Id, Time, Origin, Message, Type FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC;",
                        (fromtime, totime))
 
     data = "["
     for dataobject in cursor:
         data += """
             {
-                "Id" : \"""" + str(dataobject[4]) + """\",
-                "Time" : \"""" + str(dataobject[0]) + """\",
-                "Origin" : \"""" + dataobject[1] + """\",
-                "Message" : \"""" + dataobject[2] + """\",
-                "Type" : \"""" + str(dataobject[3]) + """\"
+                "Id" : \"""" + str(dataobject[0]) + """\",
+                "Time" : \"""" + str(dataobject[1]) + """\",
+                "Origin" : \"""" + str(dataobject[2]) + """\",
+                "Message" : \"""" + str(dataobject[3]) + """\",
+                "Type" : \"""" + str(dataobject[4]) + """\"
             },
         """
     data = data.strip().strip(",")

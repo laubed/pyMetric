@@ -16,7 +16,7 @@ body {
 	border-radius:10px;
 }
 
-#table_messageLog{
+#message_table {
   max-height:80%;
 }
 

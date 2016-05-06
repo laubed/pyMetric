@@ -6,6 +6,7 @@
     <script src="js/chart.js"></script>
     <script src="js/index.js"></script>
     <script src="js/knockout.js"></script>
+    <script src="js/moment.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
@@ -17,7 +18,8 @@
 <div class="" id="content">
     <div class="col-md-6" id="content_left">
         <div class="panel panel-default">
-            <table class="table" id="table_messageLog">
+            <!-- Messages Panel -->
+            <table class="table" id="message_table">
                 <thead>
                 <tr>
                     <th>Zeitpunkt</th>
@@ -27,26 +29,39 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!-- ko foreach: messages -->
                 <tr class="info">
-                    <td>10:26:13</td>
-                    <td>Client 6</td>
-                    <td>Connected</td>
-                    <td>Info</td>
+                    <td><div data-bind="text: Time"></div></td>
+                    <td><div data-bind="text: Origin"></div></td>
+                    <td><div data-bind="text: Message"></div></td>
+                    <td><div data-bind="text: Type"></div></td>
                 </tr>
-                <tr class="warning">
-                    <td>10:18:13</td>
-                    <td>Client 9</td>
-                    <td>High CPU Usage</td>
-                    <td>Warning</td>
-                </tr>
-                <tr class="danger">
-                    <td>10:22:13</td>
-                    <td>Client 2</td>
-                    <td>Connection Lost</td>
-                    <td>Error</td>
-                </tr>
+                <!-- /ko -->
                 </tbody>
             </table>
+            <script>
+                function MessageViewModel() {
+                    var self = this;
+                    self.messages = ko.observableArray();
+
+                    function updateMessages() {
+                        $.getJSON("http://localhost:5000/metric/api/v1.0/message/20", function (data) {
+                            self.messages.removeAll();
+                            for (var i = 0; i < data.length; i++) {
+                                self.messages.push({
+                                    Time: ko.observable(moment.unix(data[i].Time).format("DD.MM.YYYY HH:mm:ss")),
+                                    Origin: ko.observable(data[i].Origin),
+                                    Message: ko.observable(data[i].Message),
+                                    Type: ko.observable(data[i].Type)
+                                });
+                            }
+                            setTimeout(updateMessages, 2000);
+                        });
+                    }
+                    updateMessages();
+                }
+                ko.applyBindings(new MessageViewModel(), $('#message_table')[0]);
+            </script>
         </div>
         <div style="clear: both"></div>
         <div id="lineCharts">
