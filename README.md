@@ -62,4 +62,5 @@ There are several client API scripts available to report data to the backend ser
 
 
 ### Credit ###
-* Icons used in logo and graphics by [Github Octicons](https://octicons.github.com/)
+* Icons used in logo and graphics: [Octicons by Github](https://octicons.github.com/)
+* Font used in logo and graphics: [Roboto by Google](https://www.google.com/fonts/specimen/Roboto)
