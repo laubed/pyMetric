@@ -18,8 +18,8 @@
     <div class="" id="content">
     
       <div class="col-md-6" id="content_left">
-  
-        <table class="table border col-md-12" id="table_messageLog">
+        <div class="panel panel-default">
+        <table class="table" id="table_messageLog">
           
           <thead>
             
@@ -66,19 +66,22 @@
           </tbody>
           
         </table>
-        
-        <div class="col-md-12 border" id="lineCharts">
-          
-          <canvas id="lChart1" class="chart"></canvas>
-          
+          </div>
+
+        <div style="clear: both" ></div>
+
+        <div id="lineCharts">
+          <div class="panel panel-default">
+            <canvas id="lChart1" class="chart"></canvas>
+          </div>
         </div>
         
       </div>
       
       <div class="col-md-6" id="content_right">
-        
-        <div id="doughnutCharts">
-        
+        <div class="panel panel-default">
+        <div class="row" id="doughnutCharts">
+
           <div class="col-md-6 dChartBox" id="dChartBox1">
             <canvas id="dChart1" class="chart"></canvas>
           </div>
@@ -86,7 +89,7 @@
           <div class="col-md-6 dChartBox" id="dChartBox2">
             <canvas id="dChart2" class="chart"></canvas>
           </div>
-          
+        </div>
         </div>
         
       </div>
