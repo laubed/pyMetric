@@ -51,7 +51,7 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 > 4. To run the server either setup your webserver to use the pyMetricServer/pyMetric.py as WSGI application or just run pyMetricServer/pyMetric.py to use the standalone server
 > 5. Use the client API scripts to insert data
 
-![pyMetric Info Graphic](https://bitbucket.org/laubed/pyMetric/raw/master/images/explanation.png)
+![pyMetric Info Graphic](https://raw.githubusercontent.com/laubed/pyMetric/master/images/explanation.png)
 
 
 
