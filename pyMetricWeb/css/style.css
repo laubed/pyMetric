@@ -1,0 +1,35 @@
+body {
+  padding:0 30px;
+}
+
+#content {
+  margin-top:10px;
+  padding:10px 50px;
+}
+
+#content_left, #content_right {
+  padding:10px;
+}
+
+.border {
+	border:1px solid #ccc;
+	border-radius:10px;
+}
+
+#table_messageLog{
+  max-height:80%;
+}
+
+#lineCharts{
+  padding-top:15px;
+  padding-left:0;
+}
+
+.dChartBox {
+  padding:0;
+}
+
+.chart {
+  width:250px;
+  height:250px;
+}
