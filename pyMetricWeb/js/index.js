@@ -90,21 +90,18 @@ $(document).ready(function(){
 
  	// Functions
 
-	function scroll(toBottom, duration){
-        /*
-            toBottom: true | false,
-            duration: time in ms
-        */
-
+    var toBottom = true;
+	function scroll(){
+        var speed = 30; // px/s
+        var duration = ($(document).height()/speed)*1000
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
         var verticalCoordinate = toBottom ? $(document).height() - h: 0; //(-1 * $(document).height());
 
+        toBottom = !toBottom;
+
 		$('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
-			scroll(toBottom ? false : true, duration);
+			setTimeout(scroll, 2000);
 		});
  	}
-
- 	// start Scrolling:
-    var speed = 20; // px/s
- 	scroll(true, ($(document).height()/speed)*1000);
+    setTimeout(scroll, 2000); // fix issue with website not populated with data
 });

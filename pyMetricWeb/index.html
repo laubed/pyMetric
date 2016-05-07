@@ -49,10 +49,10 @@
                             self.messages.removeAll();
                             $.each(data, function() {
                                 self.messages.push({
-                                    Time: ko.observable(moment.unix(data[i].Time).format("HH:mm:ss")),
-                                    Origin: ko.observable(data[i].Origin),
-                                    Message: ko.observable(data[i].Message),
-                                    Type: ko.observable(data[i].Type, 10)
+                                    Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
+                                    Origin: ko.observable(this.Origin),
+                                    Message: ko.observable(this.Message),
+                                    Type: ko.observable(this.Type, 10)
                                 });
                             });
                             setTimeout(updateMessages, 2000);
