@@ -96,15 +96,15 @@ $(document).ready(function(){
             duration: time in ms
         */
 
-        var verticalCoordinate = toBottom ? $(document).height() : (-1 * $(document).height());
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        var verticalCoordinate = toBottom ? $(document).height() - h: 0; //(-1 * $(document).height());
 
-		$('body').animate({ scrollTop: verticalCoordinate}, duration, function(){
+		$('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
 			scroll(toBottom ? false : true, duration);
 		});
  	}
 
  	// start Scrolling:
-
- 	scroll(true, 10000);
-
+    var speed = 20; // px/s
+ 	scroll(true, ($(document).height()/speed)*1000);
 });
