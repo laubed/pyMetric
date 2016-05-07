@@ -92,7 +92,7 @@ $(document).ready(function(){
 
     var toBottom = true;
 	function scroll(){
-        var speed = 30; // px/s
+        var speed = 200; // px/s
         var duration = ($(document).height()/speed)*1000
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
         var verticalCoordinate = toBottom ? $(document).height() - h: 0; //(-1 * $(document).height());
