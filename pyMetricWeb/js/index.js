@@ -90,23 +90,21 @@ $(document).ready(function(){
 
  	// Functions
 
-	function scroll(toBottom){
-		var verticalCoordinate = toBottom ? $(document).height() : (-1 * $(document).height());
+	function scroll(toBottom, duration){
+        /*
+            toBottom: true | false,
+            duration: time in ms
+        */
 
-		$('body').animate({ scrollTop: verticalCoordinate}, 10000, function(){
-			scroll(toBottom ? false : true);
+        var verticalCoordinate = toBottom ? $(document).height() : (-1 * $(document).height());
+
+		$('body').animate({ scrollTop: verticalCoordinate}, duration, function(){
+			scroll(toBottom ? false : true, duration);
 		});
  	}
 
  	// start Scrolling:
 
- 	scroll(true);
-
-  // Listeners
+ 	scroll(true, 10000);
 
 });
-
-// Für Testzwecke
-
-// ------------------------------------------------------------
-
