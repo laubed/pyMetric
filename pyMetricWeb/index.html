@@ -21,22 +21,22 @@
             <!-- Messages Panel -->
             <table class="table" id="message_table">
                 <thead>
-                <tr>
-                    <th width="20%">Zeitpunkt</th>
-                    <th width="20%">Herkunft</th>
-                    <th width="55%">Nachricht</th>
-                    <th width="5%">Typ</th>
-                </tr>
+                    <tr>
+                        <th width="20%">Zeitpunkt</th>
+                        <th width="20%">Herkunft</th>
+                        <th width="55%">Nachricht</th>
+                        <th width="5%">Typ</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <!-- ko foreach: messages -->
-                <tr data-bind="css: { 'alert-info': Type() == 1, 'alert-warning': Type() == 2, 'alert-danger': Type() == 3 }">
-                    <td><div data-bind="text: Time"></div></td>
-                    <td><div data-bind="text: Origin"></div></td>
-                    <td><div data-bind="text: Message"></div></td>
-                    <td><div data-bind="text: Type"></div></td>
-                </tr>
-                <!-- /ko -->
+                    <!-- ko foreach: messages -->
+                    <tr data-bind="css: { 'alert-info': Type() == 1, 'alert-warning': Type() == 2, 'alert-danger': Type() == 3 }">
+                        <td><div data-bind="text: Time"></div></td>
+                        <td><div data-bind="text: Origin"></div></td>
+                        <td><div data-bind="text: Message"></div></td>
+                        <td><div data-bind="text: Type"></div></td>
+                    </tr>
+                    <!-- /ko -->
                 </tbody>
             </table>
             <script>
@@ -47,14 +47,14 @@
                     function updateMessages() {
                         $.getJSON("http://localhost:5000/metric/api/v1.0/message/20", function (data) {
                             self.messages.removeAll();
-                            for (var i = 0; i < data.length; i++) {
+                            $.each(data, function() {
                                 self.messages.push({
                                     Time: ko.observable(moment.unix(data[i].Time).format("HH:mm:ss")),
                                     Origin: ko.observable(data[i].Origin),
                                     Message: ko.observable(data[i].Message),
                                     Type: ko.observable(data[i].Type, 10)
                                 });
-                            }
+                            });
                             setTimeout(updateMessages, 2000);
                         });
                     }
