@@ -41,7 +41,7 @@ def get_metric(operation, fromtime, totime, key, origin=None):
             return "{'message': 'Operation not supported'}"
 
         if resentry is not None:
-            return "{'Id': '%s', 'Time': '%s', 'Origin': '%s', 'Key': '%s', 'Value': '%s'}" % (
+            return '{"Id": "%s", "Time": "%s", "Origin": "%s", "Key": "%s", "Value": "%s"},' % (
                 str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4]))
         else:
             return "{}"
@@ -55,12 +55,12 @@ def get_metric(operation, fromtime, totime, key, origin=None):
             for resentry in cursor:
                 resentries.append((str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4])))
 
-        result = "{"
+        result = "["
         for resentry in resentries:
-            result += "{'Id': '%s', 'Time': '%s', 'Origin': '%s', 'Key': '%s', 'Value': '%s'}," % (
+            result += '{"Id": "%s", "Time": "%s", "Origin": "%s", "Key": "%s", "Value": "%s"},' % (
                 str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4]))
         result = result.strip().strip(",")
-        result += "}"
+        result += "]"
         return result
 
 
