@@ -55,6 +55,15 @@ def get_metric(operation, fromtime, totime, key, origin=None):
             for resentry in cursor:
                 resentries.append((str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4])))
 
+        elif operation == "CUR":
+            cursor = database.cursor()
+            cursor.execute(
+                "SELECT Id, Time, Origin, Key, Value FROM log_metric WHERE Time > %s AND Time < %s AND Key = %s AND Origin = %s ORDER BY Time DESC LIMIT 1",
+                (fromtime, totime, key, origin))
+            for resentry in cursor:
+                resentries.append(
+                    (str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4])))
+
         result = "["
         for resentry in resentries:
             result += '{"Id": "%s", "Time": "%s", "Origin": "%s", "Key": "%s", "Value": "%s"},' % (
@@ -67,7 +76,7 @@ def get_metric(operation, fromtime, totime, key, origin=None):
 @app.route('/metric/api/v1.0/metric', methods=['POST'])
 @crossdomain(origin='*')
 def add_metric():
-    print request.json
+    # print request.json
     if not request.json or not 'Origin' in request.json or not 'Key' in request.json or not 'Value' in request.json:
         abort(400)
     else:

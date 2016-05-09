@@ -46,7 +46,7 @@ def get_message_long(fromtime, totime, maxentries):
 @app.route('/metric/api/v1.0/message', methods=['POST'])
 @crossdomain(origin='*')
 def add_message():
-    print request.json
+    # print request.json
     if not request.json or not 'Origin' in request.json or not 'Message' in request.json or not 'Type' in request.json:
         abort(400)
     else:
