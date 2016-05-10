@@ -98,7 +98,7 @@ def getMessage(timefrom = None, timeto = None, origin = None, typ = None, count 
         params.append(origin)
 
     if typ != None:
-        query += "Typ = %s AND "
+        query += "Type = %s AND "
         params.append(typ)
 
     query = query.strip("AND ")
