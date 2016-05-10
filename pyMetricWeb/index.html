@@ -45,9 +45,9 @@
                     self.messages = ko.observableArray();
 
                     function updateMessages() {
-                        $.getJSON("http://localhost:5000/metric/api/v1.0/message/20", function (data) {
+                        $.getJSON("http://localhost:5000/metric/api/v1.0/messages/get?count=20", function (data) {
                             self.messages.removeAll();
-                            $.each(data, function() {
+                            $.each(data.results, function() {
                                 self.messages.push({
                                     Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
                                     Origin: ko.observable(this.Origin),
