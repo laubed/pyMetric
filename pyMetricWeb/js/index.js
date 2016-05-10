@@ -105,7 +105,6 @@ $(document).ready(function(){
             type: 'GET',
         }).done(function(response){
                 var data = JSON.parse(response);
-                console.log(lineCharts[0]);
                 var currentData = lineCharts[0].getChartData();
 
                 $.each(data.results, function(){
@@ -114,8 +113,6 @@ $(document).ready(function(){
                     }
                 });
                 
-                chartObj.update();
-
                 window.setTimeout(function(){
                     getCPU(origin, count);
                 }, 1000);
