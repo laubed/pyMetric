@@ -135,3 +135,16 @@ def getMessage(timefrom = None, timeto = None, origin = None, typ = None, count 
 
     return results
     pass
+
+def insertMetric(time, origin, key, value):
+    cursor = database.cursor()
+    cursor.execute("INSERT INTO log_metric (Time, Origin, Key, Value) VALUES (%s, %s, %s, %s) RETURNING Id, Time, Origin, Key, Value", (time, origin, key, value))
+    row = cursor.fetchone()
+    cursor.close();
+    return {
+            "Id": str(row[0]),
+            "Time": str(row[1]),
+            "Origin": str(row[2]),
+            "Key": str(row[3]),
+            "Value": str(row[4])
+        }

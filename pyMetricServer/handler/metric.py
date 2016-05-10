@@ -3,10 +3,11 @@ import time
 import math
 from flask import request
 from pyMetricServer import app
-from pyMetricServer.system.database import database, getMetric
+from pyMetricServer.system.database import database, getMetric, insertMetric
 from werkzeug.exceptions import abort
 from pyMetricServer.system.decorators import crossdomain
 from flask.json import jsonify
+import time
 
 
 @app.route("/api/v1.0/metrics/get")
@@ -22,7 +23,9 @@ def get_metric():
         count       -   specifies how many rows should be returned
         order       -   specifies the field by which resulsts get ordered
         desc        -   specifies wether the results are sorted in ascending oder descending order
-    :return:    return all rows in metric data which matches specified criteria
+    Example:
+        GET /api/v1.0/metrics/get?fromtime=0&totime=123000423&origin=10.0.0.9&key=cpu_usage&count=20&order=time&desc=false
+    :return:    returns all rows in metric data which matches specified criteria
     """
 
     fromtime = request.args.get("fromtime", None)
@@ -54,7 +57,9 @@ def current_metric():
         GET Params:
             origin      -   specifies the origin field in the database to search for
             key         -   specifies the key field in the database to search for
-        :return:    return all rows in metric data which matches specified criteria
+        Example:
+            GET /api/v1.0/metrics/current?origin=10.0.0.9&key=cpu_usage
+        :return:    returns all rows in metric data which matches specified criteria
         """
     fromtime = None
     totime = None
@@ -79,16 +84,27 @@ def current_metric():
 @app.route('/api/v1.0/metrics', methods=['POST'])
 @crossdomain(origin='*')
 def add_metric():
-    # print request.json
-    if not request.json or not 'Origin' in request.json or not 'Key' in request.json or not 'Value' in request.json:
+    """
+    Used to insert a metric value into database
+    Post Params:
+        origin      -   Origin of the metric data
+        key         -   Key of the metric data
+        value       -   Value of the metric data
+        time        -   Timestamp of the metric data (optional)
+    :return:    returns the row just inserted
+    """
+    origin = request.form.get("origin", None)
+    key = request.form.get("key", None)
+    value = request.form.get("value", None)
+    times = request.form.get("time", time.time())
+    if origin == None or key == None or value == None:
         abort(400)
     else:
-        cursor = database.cursor()
-        cursor.execute("INSERT INTO log_metric (Time, Origin, Key, Value) VALUES (%s,%s,%s,%s);",
-                       (time.time(), request.json["Origin"], request.json["Key"], request.json["Value"]))
-        cursor.close()
-        database.commit()
-        return "{'message': 'OK'}"
+        res = insertMetric(times, origin, key, value)
+        return jsonify({
+            "results": res,
+            "resultcount": len(res)
+        })
 
 
 
