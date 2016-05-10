@@ -42,10 +42,21 @@ def getMetric(timefrom = None, timeto = None, origin = None, key = None, count =
 
 
     if order != None and order[0] != None:
-        if(order[1]):
-            query += "ORDER BY %s DESC " % order[0]
+        if order[1]:
+            desc = "DESC"
         else:
-            query += "ORDER BY %s ASC " % order[0]
+            desc = "ASC"
+            
+        if order[0] == "time":
+            query += "ORDER BY Time " + desc
+        elif order[0] == "value":
+            query += "ORDER BY Value " + desc
+        elif order[0] == "key":
+            query += "ORDER BY Key " + desc
+        elif order[0] == "origin":
+            query += "ORDER BY Origin " + desc
+        elif order[0] == "id":
+            query += "ORDER BY Id" + desc
 
     if count != None:
         query += "LIMIT %s "

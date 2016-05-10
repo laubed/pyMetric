@@ -35,7 +35,7 @@ def get_metric():
 def current_metric():
     res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
                     request.args.get("origin", None), request.args.get("key", None), 1,
-                    ("Time", True))
+                    ("time", True))
     return jsonify({"results": res, "resultcount": len(res)})
 
 
