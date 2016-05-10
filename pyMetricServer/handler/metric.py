@@ -12,10 +12,22 @@ from flask.json import jsonify
 @app.route("/metric/api/v1.0/metric/get")
 @crossdomain(origin="*")
 def get_metric():
+    """
+    Used to get a list of metric data.
+    GET Params:
+        fromtime    -   specifies a min timestamp to search for
+        totime      -   specifies a max timestamp to search for
+        origin      -   specifies the origin field in the database to search for
+        key         -   specifies the key field in the database to search for
+        count       -   specifies how many rows should be returned
+        order       -   specifies the field by which resulsts get ordered
+        desc        -   specifies wether the results are sorted in ascending oder descending order
+    :return:    return all rows in metric data which matches specified criteria
+    """
     res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
                     request.args.get("origin", None), request.args.get("key", None), request.args.get("count", None),
-                    (request.args.get("order", "Time"), bool(request.args.get("desc", False))));
-    return jsonify({"results": res})
+                    (request.args.get("order", "Time"), bool(request.args.get("desc", True))));
+    return jsonify({"results": res, "resultcount": len(res)})
 
 
 @app.route("/metric/api/v1.0/metric/current")
@@ -23,8 +35,8 @@ def get_metric():
 def current_metric():
     res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
                     request.args.get("origin", None), request.args.get("key", None), 1,
-                    ("Time", False))
-    return jsonify({"results": res})
+                    ("Time", True))
+    return jsonify({"results": res, "resultcount": len(res)})
 
 
 @app.route('/metric/api/v1.0/metric', methods=['POST'])

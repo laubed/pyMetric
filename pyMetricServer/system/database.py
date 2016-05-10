@@ -43,9 +43,9 @@ def getMetric(timefrom = None, timeto = None, origin = None, key = None, count =
 
     if order != None and order[0] != None:
         if(order[1]):
-            query += "ORDER BY %s ASC " % order[0]
-        else:
             query += "ORDER BY %s DESC " % order[0]
+        else:
+            query += "ORDER BY %s ASC " % order[0]
 
     if count != None:
         query += "LIMIT %s "
