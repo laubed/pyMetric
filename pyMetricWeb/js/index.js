@@ -1,3 +1,6 @@
+var lineCharts = [];
+var doughnutCharts = [];
+
 $(document).ready(function(){
   
   	// Chart Data
@@ -5,7 +8,7 @@ $(document).ready(function(){
     var lineChartData = [];
     
     lineChartData[0] = {
-        labels: ["", "", "", "", "", ""],
+        labels: [],
         datasets: [
           {
             label: "CPU-Auslastung",
@@ -15,18 +18,7 @@ $(document).ready(function(){
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
             pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [13, 53, 32, 34, 123, 10]
-          },
-          
-          {
-            label: "CPU-Auslastung",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [76, 12, 87, 17, 42, 55]
+            data: []
           }
         ]
     };
@@ -75,15 +67,18 @@ $(document).ready(function(){
   
     // Genereate Charts
     
-    var lineCharts = [];
-    
     lineCharts[0] = new Chart($('#lChart1').get(0).getContext('2d'), {
         type: 'line',
-        data: lineChartData[0]
+        data: lineChartData[0],
+        options: {
+            title: {
+                display: true,
+                position: "top",
+                text: "CPU-Auslastung"
+            }
+        }
     });
   
-    var doughnutCharts = [];
-    
     doughnutCharts[0] = new Chart($('#dChart' + (0 + 1) ).get(0).getContext("2d"),{ type: 'doughnut', data: dChartData[0] });
     doughnutCharts[1] = new Chart($('#dChart' + (1 + 1) ).get(0).getContext("2d"),{ type: 'doughnut', data: dChartData[1] });
 
@@ -103,5 +98,74 @@ $(document).ready(function(){
 			setTimeout(scroll, 2000);
 		});
  	}
+
+    function getCPU(chartObj, origin, count){
+        $.ajax({
+            url: 'localhost:5000/metrics/api/v1.0/get?origin=' + origin + '&key=cpu_usage&count=' + count,
+            type: 'GET',
+            success: function(response){
+                var data = JSON.parse(response);
+                var currentData = chartObj.getChartData(0); // 0 == Dataset 0, We have only one.
+
+                $.each(data.results, function(){
+                    if(currentData._labels.contains(this.Id)){
+                        chartObj.addChartData(0, { label: this.Id, value: parseInt(this.Value) });
+                    }
+                });
+                
+                chartObj.update();
+
+                window.setTimeout(function(){
+                    getCPU(chartObj, origin, count);
+                }, 1000);
+            }
+        })
+    }
+
+    // Chart JS Additional Functions
+
+    Object.prototype.getChartData = function(){
+        var data = {};
+        var self = this;
+
+        for(var e = 0; e < this.data.datasets.length; e++){
+            data['dataset' + e] = [];
+
+            for(var i = 0; i < this.data.labels.length; i++){
+                var label = self.data.labels[i];
+                var value = self.data.datasets[e].data[i];
+                data['dataset' + e][i] = { label: label, value: value };
+            }
+        }
+
+        data._length = this.data.datasets.length;
+        data._labels = this.data.labels;
+
+        return data;
+    };
+
+    Object.prototype.addChartData = function(datasetNum, obj){
+        var currentDataLength = this.data.labels.length;
+
+        this.data.labels[currentDataLength] = obj.label;
+        this.data.datasets[datasetNum].data[currentDataLength] = obj.value;
+    }
+
+    // Prototypes
+
+    Object.prototype.contains = function(x){
+        for(var i in this){
+            if(x == this[i]) return true;
+        }
+
+        return false;
+    };
+
+    // Activate Functions
+
+    getCPU(lineCharts[0], 'laptop', '20');
+
     setTimeout(scroll, 2000); // fix issue with website not populated with data
+
+
 });
