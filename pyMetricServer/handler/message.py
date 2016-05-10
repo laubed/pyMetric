@@ -2,48 +2,35 @@ import time
 
 from flask import request
 from pyMetricServer import app
-from pyMetricServer.system.database import database
+from pyMetricServer.system.database import database, getMessage
 from werkzeug.exceptions import abort
+from flask.json import jsonify
 
 from pyMetricServer.system.decorators import crossdomain
 
-
-@app.route('/metric/api/v1.0/message/<string:maxentries>', methods=['GET'])
+@app.route('/metric/api/v1.0/messages/get', methods=['GET'])
 @crossdomain(origin='*', headers="Content-Type,Accept")
-def get_message_short(maxentries):
-    return get_message_long(0, time.time(), maxentries)
+def get_messages():
+    timefrom = request.args.get("timefrom", None)
+    timeto = request.args.get("timeto", None)
+    origin = request.args.get("origin", None)
+    typ = request.args.get("type", None)
+    count = request.args.get("count", None)
+    order = (request.args.get("order", "time"), bool(request.args.get("desc", True)))
+    res = getMessage(timefrom, timeto, origin, typ, count, order)
+    return jsonify({
+        "results": res,
+        "resultcount": len(res),
+        "param_fromtime": timefrom,
+        "param_totime": timeto,
+        "param_origin": origin,
+        "param_type": typ,
+        "param_count": count,
+        "param_order": order[0],
+        "param_desc": order[1]
+    })
 
-
-@app.route('/metric/api/v1.0/message/<int:fromtime>/<int:totime>/<string:maxentries>', methods=['GET'])
-@crossdomain(origin='*', headers="Content-Type,Accept")
-def get_message_long(fromtime, totime, maxentries):
-    cursor = database.cursor()
-
-    if maxentries != 0:
-        cursor.execute("SELECT Id, Time, Origin, Message, Type FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC LIMIT %s;",
-                       (fromtime, totime, maxentries))
-    else:
-        cursor.execute("SELECT Id, Time, Origin, Message, Type FROM log_messages WHERE Time > %s AND TIME < %s ORDER BY Time DESC;",
-                       (fromtime, totime))
-
-    data = "["
-    for dataobject in cursor:
-        data += """
-            {
-                "Id" : \"""" + str(dataobject[0]) + """\",
-                "Time" : \"""" + str(dataobject[1]) + """\",
-                "Origin" : \"""" + str(dataobject[2]) + """\",
-                "Message" : \"""" + str(dataobject[3]) + """\",
-                "Type" : \"""" + str(dataobject[4]) + """\"
-            },
-        """
-    data = data.strip().strip(",")
-    data += "]"
-    cursor.close()
-    return data, 200, {'Content-Type': 'application/json'}
-
-
-@app.route('/metric/api/v1.0/message', methods=['POST'])
+@app.route('/metric/api/v1.0/messages', methods=['POST'])
 @crossdomain(origin='*')
 def add_message():
     # print request.json

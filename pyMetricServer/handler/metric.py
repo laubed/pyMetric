@@ -9,7 +9,7 @@ from pyMetricServer.system.decorators import crossdomain
 from flask.json import jsonify
 
 
-@app.route("/metric/api/v1.0/metric/get")
+@app.route("/metric/api/v1.0/metrics/get")
 @crossdomain(origin="*")
 def get_metric():
     """
@@ -24,22 +24,59 @@ def get_metric():
         desc        -   specifies wether the results are sorted in ascending oder descending order
     :return:    return all rows in metric data which matches specified criteria
     """
-    res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
-                    request.args.get("origin", None), request.args.get("key", None), request.args.get("count", None),
-                    (request.args.get("order", "Time"), bool(request.args.get("desc", True))));
-    return jsonify({"results": res, "resultcount": len(res)})
+
+    fromtime = request.args.get("fromtime", None)
+    totime = request.args.get("totime", None)
+    origin = request.args.get("origin", None)
+    key = request.args.get("key", None)
+    count = request.args.get("count", None)
+    order = (request.args.get("order", "Time"), bool(request.args.get("desc", True)))
+    res = getMetric(fromtime, totime, origin, key, count, order)
+    return jsonify({
+        "results": res,
+        "resultcount": len(res),
+        "param_fromtime": fromtime,
+        "param_totime": totime,
+        "param_origin": origin,
+        "param_key": key,
+        "param_count": count,
+        "param_order": order[0],
+        "param_desc": order[1]
+    })
 
 
 @app.route("/metric/api/v1.0/metric/current")
 @crossdomain(origin="*")
 def current_metric():
-    res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
-                    request.args.get("origin", None), request.args.get("key", None), 1,
-                    ("time", True))
-    return jsonify({"results": res, "resultcount": len(res)})
+    """
+        Used to get the last entry from a specific origin and key
+        (You can even use it without origin and key so it shows the last data pushed to the server)
+        GET Params:
+            origin      -   specifies the origin field in the database to search for
+            key         -   specifies the key field in the database to search for
+        :return:    return all rows in metric data which matches specified criteria
+        """
+    fromtime = None
+    totime = None
+    origin = request.args.get("origin", None)
+    key = request.args.get("key", None)
+    count = 1
+    order = ("time", True)
+    res = getMetric(fromtime, totime, origin, key, count, order)
+    return jsonify({
+        "results": res,
+        "resultcount": len(res),
+        "param_fromtime": fromtime,
+        "param_totime": totime,
+        "param_origin": origin,
+        "param_key": key,
+        "param_count": count,
+        "param_order": order[0],
+        "param_desc": order[1]
+    })
 
 
-@app.route('/metric/api/v1.0/metric', methods=['POST'])
+@app.route('/metric/api/v1.0/metrics', methods=['POST'])
 @crossdomain(origin='*')
 def add_metric():
     # print request.json
