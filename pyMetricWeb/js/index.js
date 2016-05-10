@@ -71,6 +71,7 @@ $(document).ready(function(){
         type: 'line',
         data: lineChartData[0],
         options: {
+            animation : false,
             title: {
                 display: true,
                 position: "top",
@@ -100,14 +101,16 @@ $(document).ready(function(){
  	}
 
     function getCPU(origin, count){
-        $.getJSON('http://localhost:5000/metrics/api/v1.0/get?origin=' + origin + '&key=cpu_usage&count=' + count, function(response){
-                var data = JSON.parse(response);
+        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time", function(data){
                 var currentData = lineCharts[0].getChartData();
-
+                console.log(lineCharts[0]);
+                lineCharts[0].data.labels.length = 0;
+                lineCharts[0].data.datasets[0].data.length = 0;
                 $.each(data.results, function(){
-                    if(checkObjectValue(this.Id, currentData.labels)){
+
+                    //if(checkObjectValue(this.Id, currentData.labels)){
                         lineCharts[0].addChartData(0, { label: this.Id, value: parseInt(this.Value) });
-                    }
+                    //}
                 });
                 
                 window.setTimeout(function(){ getCPU(origin, count); }, 1000);
@@ -115,7 +118,7 @@ $(document).ready(function(){
     }
 
 
-    function checkObjectValue(x, object)
+    function checkObjectValue(x, object){
         for(var i in object){
             if(x == this[i]) return true;
         }
