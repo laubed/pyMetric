@@ -8,7 +8,7 @@ from flask.json import jsonify
 
 from pyMetricServer.system.decorators import crossdomain
 
-@app.route('/metric/api/v1.0/messages/get', methods=['GET'])
+@app.route('/api/v1.0/messages/get', methods=['GET'])
 @crossdomain(origin='*', headers="Content-Type,Accept")
 def get_messages():
     timefrom = request.args.get("timefrom", None)
@@ -30,7 +30,7 @@ def get_messages():
         "param_desc": order[1]
     })
 
-@app.route('/metric/api/v1.0/messages', methods=['POST'])
+@app.route('/api/v1.0/messages', methods=['POST'])
 @crossdomain(origin='*')
 def add_message():
     # print request.json

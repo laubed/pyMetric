@@ -9,7 +9,7 @@ from pyMetricServer.system.decorators import crossdomain
 from flask.json import jsonify
 
 
-@app.route("/metric/api/v1.0/metrics/get")
+@app.route("/api/v1.0/metrics/get")
 @crossdomain(origin="*")
 def get_metric():
     """
@@ -45,7 +45,7 @@ def get_metric():
     })
 
 
-@app.route("/metric/api/v1.0/metric/current")
+@app.route("/api/v1.0/metrics/current")
 @crossdomain(origin="*")
 def current_metric():
     """
@@ -76,7 +76,7 @@ def current_metric():
     })
 
 
-@app.route('/metric/api/v1.0/metrics', methods=['POST'])
+@app.route('/api/v1.0/metrics', methods=['POST'])
 @crossdomain(origin='*')
 def add_metric():
     # print request.json

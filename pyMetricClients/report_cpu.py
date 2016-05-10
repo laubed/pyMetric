@@ -11,7 +11,7 @@ if len(sys.argv) == 3:
     cpu = psutil.cpu_percent(5)
 
     connection = httplib.HTTPConnection(endpoint)
-    connection.request("POST", "/metric/api/v1.0/metric",
+    connection.request("POST", "/api/v1.0/metrics",
                        """{
                             "Origin":"%s",
                             "Key": "cpu_usage",

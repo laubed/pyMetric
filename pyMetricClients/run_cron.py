@@ -7,7 +7,7 @@ if len(sys.argv) == 2:
     endpoint = str(sys.argv[1])
 
     connection = httplib.HTTPConnection(endpoint)
-    connection.request("GET", "/metric/api/v1.0/cron")
+    connection.request("GET", "/api/v1.0/cron")
     connection.getresponse()
     sys.exit(0)
 else:

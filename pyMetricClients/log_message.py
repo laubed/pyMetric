@@ -12,7 +12,7 @@ if len(sys.argv) == 5:
     endpoint = str(sys.argv[4])
 
     connection = httplib.HTTPConnection(endpoint)
-    connection.request("POST", "/metric/api/v1.0/message",
+    connection.request("POST", "/api/v1.0/messages",
                        """{
                             "Origin":"%s",
                             "Message": "%s",
