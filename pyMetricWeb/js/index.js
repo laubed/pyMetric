@@ -105,7 +105,7 @@ $(document).ready(function(){
                 var currentData = lineCharts[0].getChartData();
 
                 $.each(data.results, function(){
-                    if(checkObjectValue(this.Id, currentData.lables)){
+                    if(checkObjectValue(this.Id, currentData.labels)){
                         lineCharts[0].addChartData(0, { label: this.Id, value: parseInt(this.Value) });
                     }
                 });
