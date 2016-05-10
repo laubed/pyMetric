@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import sys
 import httplib
+import urllib
+import urllib2
 
 typedict = {"LOG": 0, "NOTICE": 1, "WARNING": 2, "ERROR": 3}
 
@@ -11,16 +13,11 @@ if len(sys.argv) == 5:
     messagetype = str(typedict[str(sys.argv[3])])
     endpoint = str(sys.argv[4])
 
-    connection = httplib.HTTPConnection(endpoint)
-    connection.request("POST", "/api/v1.0/messages",
-                       """{
-                            "Origin":"%s",
-                            "Message": "%s",
-                            "Type": "%s"
-                       }""" % (origin, message, messagetype),
-                       {"Content-type": "application/json"})
-
-    connection.getresponse()
+    url = 'http://%s/api/v1.0/messages' % endpoint
+    data = urllib.urlencode({'origin': origin,
+                             'message': message,
+                             'type': messagetype})
+    urllib2.urlopen(url=url, data=data).read()
     sys.exit(0)
 else:
     print "Usage log_message.py <Origin> <Message> <LOG|NOTICE|WARNING|ERROR> <API Endpoint>"

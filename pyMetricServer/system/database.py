@@ -8,7 +8,7 @@ cursor = database.cursor();
 cursor.execute(
     "CREATE TABLE IF NOT EXISTS log_messages (Id BIGSERIAL, Time INTEGER, Origin TEXT, Message TEXT, Type INTEGER);")
 cursor.execute(
-    "CREATE TABLE IF NOT EXISTS log_metrics (Id BIGSERIAL, Time INTEGER, Origin TEXT, Key TEXT, Value DOUBLE PRECISION)")
+    "CREATE TABLE IF NOT EXISTS log_metrics (Id BIGSERIAL, Time INTEGER, Origin TEXT, Key TEXT, Value DOUBLE PRECISION);")
 database.commit()
 cursor.close()
 
@@ -18,7 +18,7 @@ def getMetric(timefrom=None, timeto=None, origin=None, key=None, count=None, ord
     cursor = database.cursor()
 
     params = []
-    query = "SELECT Id, Time, Origin, Key, Value FROM log_metric "
+    query = "SELECT Id, Time, Origin, Key, Value FROM log_metrics "
     if (timefrom != None or timeto != None or origin != None or key != None):
         query += "WHERE "
 
@@ -76,7 +76,8 @@ def getMetric(timefrom=None, timeto=None, origin=None, key=None, count=None, ord
 
     return results
 
-def getMessage(timefrom = None, timeto = None, origin = None, typ = None, count = None, order = None):
+
+def getMessage(timefrom=None, timeto=None, origin=None, typ=None, count=None, order=None):
     results = []
     cursor = database.cursor()
 
@@ -136,15 +137,36 @@ def getMessage(timefrom = None, timeto = None, origin = None, typ = None, count 
     return results
     pass
 
+
 def insertMetric(time, origin, key, value):
     cursor = database.cursor()
-    cursor.execute("INSERT INTO log_metric (Time, Origin, Key, Value) VALUES (%s, %s, %s, %s) RETURNING Id, Time, Origin, Key, Value", (time, origin, key, value))
+    cursor.execute(
+        "INSERT INTO log_metrics (Time, Origin, Key, Value) VALUES (%s, %s, %s, %s) RETURNING Id, Time, Origin, Key, Value",
+        (time, origin, key, value))
     row = cursor.fetchone()
-    cursor.close();
+    cursor.close()
+    database.commit()
     return {
-            "Id": str(row[0]),
-            "Time": str(row[1]),
-            "Origin": str(row[2]),
-            "Key": str(row[3]),
-            "Value": str(row[4])
-        }
+        "Id": str(row[0]),
+        "Time": str(row[1]),
+        "Origin": str(row[2]),
+        "Key": str(row[3]),
+        "Value": str(row[4])
+    }
+
+
+def insertMessage(time, origin, message, typ):
+    cursor = database.cursor()
+    cursor.execute(
+        "INSERT INTO log_messages (Time, Origin, Message, Type) VALUES (%s, %s, %s, %s) RETURNING Id, Time, Origin, Message, Type",
+        (time, origin, message, typ));
+    row = cursor.fetchone()
+    cursor.close()
+    database.commit()
+    return {
+        "Id": str(row[0]),
+        "Time": str(row[1]),
+        "Origin": str(row[2]),
+        "Message": str(row[3]),
+        "Type": str(row[4])
+    }

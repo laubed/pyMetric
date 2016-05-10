@@ -2,7 +2,7 @@ import time
 
 from flask import request
 from pyMetricServer import app
-from pyMetricServer.system.database import database, getMessage
+from pyMetricServer.system.database import database, getMessage, insertMessage
 from werkzeug.exceptions import abort
 from flask.json import jsonify
 
@@ -34,12 +34,15 @@ def get_messages():
 @crossdomain(origin='*')
 def add_message():
     # print request.json
-    if not request.json or not 'Origin' in request.json or not 'Message' in request.json or not 'Type' in request.json:
+    origin = request.form.get("origin", None)
+    message = request.form.get("message", None)
+    typ = request.form.get("type", None)
+    times = request.form.get("time", time.time())
+    if origin == None or message == None or typ == None:
         abort(400)
     else:
-        cursor = database.cursor();
-        cursor.execute("INSERT INTO log_messages (Time, Origin, Message, Type) VALUES (%s,%s,%s,%s);",
-                       (time.time(), request.json["Origin"], request.json["Message"], request.json["Type"]))
-        cursor.close()
-        database.commit()
-        return "{'message': 'OK'}"
+        res = insertMessage(times, origin, message, typ)
+        return jsonify({
+            "results": res,
+            "resultcount": len(res)
+        })

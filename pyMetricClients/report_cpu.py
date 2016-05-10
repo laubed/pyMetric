@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import sys
-import httplib
+import urllib
+import urllib2
+
 import psutil
 
 
@@ -10,16 +12,11 @@ if len(sys.argv) == 3:
 
     cpu = psutil.cpu_percent(5)
 
-    connection = httplib.HTTPConnection(endpoint)
-    connection.request("POST", "/api/v1.0/metrics",
-                       """{
-                            "Origin":"%s",
-                            "Key": "cpu_usage",
-                            "Value": "%s"
-                       }""" % (origin, cpu),
-                       {"Content-type": "application/json"})
-
-    connection.getresponse()
+    url = 'http://%s/api/v1.0/metrics' % endpoint
+    data = urllib.urlencode({'origin': origin,
+                             'key': 'cpu_usage',
+                             'value': cpu})
+    urllib2.urlopen(url=url, data=data).read()
     sys.exit(0)
 else:
     print "Usage run_cron.py <Origin> <API Endpoint>"
