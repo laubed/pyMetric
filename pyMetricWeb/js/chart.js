@@ -3434,6 +3434,38 @@ module.exports = function(Chart) {
 
 	helpers.extend(Chart.Controller.prototype, {
 
+    /** Modified Part by SU **/
+
+    getChartData: function getChartData(){
+        var data = {};
+
+        for(var e = 0; e < this.data.datasets.length; e++){
+            data['dataset' + e] = [];
+
+            for(var i = 0; i < this.data.labels.length; i++){
+                var label = this.data.labels[i];
+                var value = this.data.datasets[e].data[i];
+                data['dataset' + e][i] = { label: label, value: value };
+            }
+        }
+
+        data._length = this.data.datasets.length;
+        data._labels = this.data.labels;
+
+        return data;
+    },
+
+    addChartData: function addChartData(datasetNum, obj){
+        var currentDataLength = this.data.labels.length;
+
+        this.data.labels[currentDataLength] = obj.label;
+        this.data.datasets[datasetNum].data[currentDataLength] = obj.value;
+
+        this.update();
+    },
+
+    /************************************/
+
 		initialize: function initialize() {
 
 			// TODO

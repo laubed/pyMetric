@@ -8,7 +8,7 @@ $(document).ready(function(){
     var lineChartData = [];
     
     lineChartData[0] = {
-        labels: [],
+        labels: [""],
         datasets: [
           {
             label: "CPU-Auslastung",
@@ -18,7 +18,7 @@ $(document).ready(function(){
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
             pointHighlightStroke: "rgba(220,220,220,1)",
-            data: []
+            data: [0]
           }
         ]
     };
@@ -99,56 +99,27 @@ $(document).ready(function(){
 		});
  	}
 
-    function getCPU(chartObj, origin, count){
+    function getCPU(origin, count){
         $.ajax({
             url: 'localhost:5000/metrics/api/v1.0/get?origin=' + origin + '&key=cpu_usage&count=' + count,
             type: 'GET',
-            success: function(response){
+        }).done(function(response){
                 var data = JSON.parse(response);
-                var currentData = chartObj.getChartData(0); // 0 == Dataset 0, We have only one.
+                console.log(lineCharts[0]);
+                var currentData = lineCharts[0].getChartData();
 
                 $.each(data.results, function(){
                     if(currentData._labels.contains(this.Id)){
-                        chartObj.addChartData(0, { label: this.Id, value: parseInt(this.Value) });
+                        lineCharts[0].addChartData(0, { label: this.Id, value: parseInt(this.Value) });
                     }
                 });
                 
                 chartObj.update();
 
                 window.setTimeout(function(){
-                    getCPU(chartObj, origin, count);
+                    getCPU(origin, count);
                 }, 1000);
-            }
-        })
-    }
-
-    // Chart JS Additional Functions
-
-    Object.prototype.getChartData = function(){
-        var data = {};
-        var self = this;
-
-        for(var e = 0; e < this.data.datasets.length; e++){
-            data['dataset' + e] = [];
-
-            for(var i = 0; i < this.data.labels.length; i++){
-                var label = self.data.labels[i];
-                var value = self.data.datasets[e].data[i];
-                data['dataset' + e][i] = { label: label, value: value };
-            }
-        }
-
-        data._length = this.data.datasets.length;
-        data._labels = this.data.labels;
-
-        return data;
-    };
-
-    Object.prototype.addChartData = function(datasetNum, obj){
-        var currentDataLength = this.data.labels.length;
-
-        this.data.labels[currentDataLength] = obj.label;
-        this.data.datasets[datasetNum].data[currentDataLength] = obj.value;
+        });
     }
 
     // Prototypes
@@ -163,7 +134,7 @@ $(document).ready(function(){
 
     // Activate Functions
 
-    getCPU(lineCharts[0], 'laptop', '20');
+    getCPU('laptop', '20');
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 
