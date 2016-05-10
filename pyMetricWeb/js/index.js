@@ -100,34 +100,29 @@ $(document).ready(function(){
  	}
 
     function getCPU(origin, count){
-        $.ajax({
-            url: 'localhost:5000/metrics/api/v1.0/get?origin=' + origin + '&key=cpu_usage&count=' + count,
-            type: 'GET',
-        }).done(function(response){
+        $.getJSON('http://localhost:5000/metrics/api/v1.0/get?origin=' + origin + '&key=cpu_usage&count=' + count, function(response){
                 var data = JSON.parse(response);
                 var currentData = lineCharts[0].getChartData();
 
                 $.each(data.results, function(){
-                    if(currentData._labels.contains(this.Id)){
+                    if(ceckObjectValue(this.Id, currentData.lables)){
                         lineCharts[0].addChartData(0, { label: this.Id, value: parseInt(this.Value) });
                     }
                 });
                 
-                window.setTimeout(function(){
-                    getCPU(origin, count);
-                }, 1000);
+                window.setTimeout(function(){ getCPU(origin, count); }, 1000);
         });
     }
 
-    // Prototypes
 
-    Object.prototype.contains = function(x){
-        for(var i in this){
+    function checkObjectValue(x, array)
+        for(var i in array){
             if(x == this[i]) return true;
         }
 
         return false;
     };
+    
 
     // Activate Functions
 
