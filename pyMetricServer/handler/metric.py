@@ -3,74 +3,28 @@ import time
 import math
 from flask import request
 from pyMetricServer import app
-from pyMetricServer.system.database import database
+from pyMetricServer.system.database import database, getMetric
 from werkzeug.exceptions import abort
 from pyMetricServer.system.decorators import crossdomain
+from flask.json import jsonify
 
 
-@app.route('/metric/api/v1.0/metric/<string:operation>/<string:key>/<int:fromtime>/<int:totime>', defaults={'origin': None})
-@app.route("/metric/api/v1.0/metric/<string:operation>/<string:key>/<int:fromtime>/<int:totime>/<string:origin>")
+@app.route("/metric/api/v1.0/metric/get")
 @crossdomain(origin="*")
-def get_metric(operation, fromtime, totime, key, origin=None):
-    if not origin:
-        resentry = None
-        if operation == "MAX":
-            cursor = database.cursor()
-            cursor.execute(
-                "SELECT Id, Time, Origin, Key, Value FROM log_metric WHERE Time > %s AND Time < %s AND Key = %s ORDER BY TIME ASC",
-                (fromtime, totime, key))
-            maxvalue = 0;
-            for row in cursor:
-                if row[4] >= maxvalue:
-                    maxvalue = row[4]
-                    resentry = row
+def get_metric():
+    res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
+                    request.args.get("origin", None), request.args.get("key", None), request.args.get("count", None),
+                    (request.args.get("order", None), bool(request.args.get("desc", False))));
+    return jsonify({"results": res})
 
-        elif operation == "MIN":
-            cursor = database.cursor()
-            cursor.execute(
-                "SELECT Id, Time, Origin, Key, Value FROM log_metric WHERE Time > %s AND Time < %s AND Key = %s ORDER BY TIME ASC",
-                (fromtime, totime, key))
-            minvalue = float("inf")
 
-            for row in cursor:
-                if row[4] <= minvalue:
-                    minvalue = row[4]
-                    resentry = row
-
-        else:
-            return "{'message': 'Operation not supported'}"
-
-        if resentry is not None:
-            return '{"Id": "%s", "Time": "%s", "Origin": "%s", "Key": "%s", "Value": "%s"},' % (
-                str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4]))
-        else:
-            return "{}"
-    else:
-        resentries = []
-        if operation == "GET":
-            cursor = database.cursor()
-            cursor.execute(
-                "SELECT Id, Time, Origin, Key, Value FROM log_metric WHERE Time > %s AND Time < %s AND Key = %s AND Origin = %s ORDER BY Time ASC",
-                (fromtime, totime, key, origin))
-            for resentry in cursor:
-                resentries.append((str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4])))
-
-        elif operation == "CUR":
-            cursor = database.cursor()
-            cursor.execute(
-                "SELECT Id, Time, Origin, Key, Value FROM log_metric WHERE Time > %s AND Time < %s AND Key = %s AND Origin = %s ORDER BY Time DESC LIMIT 1",
-                (fromtime, totime, key, origin))
-            for resentry in cursor:
-                resentries.append(
-                    (str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4])))
-
-        result = "["
-        for resentry in resentries:
-            result += '{"Id": "%s", "Time": "%s", "Origin": "%s", "Key": "%s", "Value": "%s"},' % (
-                str(resentry[0]), str(resentry[1]), str(resentry[2]), str(resentry[3]), str(resentry[4]))
-        result = result.strip().strip(",")
-        result += "]"
-        return result
+@app.route("/metric/api/v1.0/metric/current")
+@crossdomain(origin="*")
+def current_metric():
+    res = getMetric(request.args.get("fromtime", None), request.args.get("totime", None),
+                    request.args.get("origin", None), request.args.get("key", None), 1,
+                    ("Time", False))
+    return jsonify({"results": res})
 
 
 @app.route('/metric/api/v1.0/metric', methods=['POST'])
@@ -86,3 +40,6 @@ def add_metric():
         cursor.close()
         database.commit()
         return "{'message': 'OK'}"
+
+
+
