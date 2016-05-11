@@ -5,24 +5,42 @@ $(document).ready(function(){
   
   	// Chart Data
     
-    lineCharts[0] = new CanvasJS.Chart("lineChart1", {
-        animationEnabled: false,
-        data: [{
-            type: "spline",
-            dataPoints: [
-                { x: 10, y: 10 },
-                { x: 20, y: 12 },
-                { x: 30, y: 8 },
-                { x: 40, y: 14 },
-                { x: 50, y: 6 },
-                { x: 60, y: 24 },
-                { x: 70, y: 4 },
-                { x: 80, y: 10 }
-            ]
-        }]
-    });
-
-    lineCharts[0].render();
+    lineCharts[0] = new Chartist.Line('#lineChart1', {
+                        series: [
+                            {
+                                name: "cpu_usage",
+                                data: []
+                            },
+                            {
+                                name: "timeframe",
+                                data: [{x:0},{x:0}]
+                            }
+                        ]
+                    }, {
+                    series: {
+                    "timeframe":{
+                        showLine: false,
+                        showPoint: false
+                    },
+                    "cpu_usage":{
+                        showLine: true,
+                        showPoint: false
+                    }
+                    },
+          axisX: {
+            type: Chartist.FixedScaleAxis,
+            divisor: 10,
+            labelInterpolationFnc: function(value) {
+              return moment(value*1000).fromNow();
+            }
+          },
+          axisY: {
+            low: 0,
+            high: 100
+          },
+          height: 400
+        });
+    /*
 
     doughnutCharts[0] = new CanvasJS.Chart("doughnutChart1", {
         animationEnabled: false,
@@ -42,7 +60,7 @@ $(document).ready(function(){
     });
 
    doughnutCharts[0].render();
-
+    */
     // Functions
 
     function addChartData(chart, data){
@@ -67,18 +85,21 @@ $(document).ready(function(){
 		});
  	}
 
-    function getCPU(chart, origin, count){
-        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time&_t=" + Date.now(), function(data){
-                chart.options.data[0].dataPoints = [];
+    function getCPU(chart, origin, timeframe){
+        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
+                window.setTimeout(function(){ getCPU(chart, origin, timeframe); }, 1000);
+                console.log(chart);
+                ndata = [];
+
+                chart.data.series[1].data = [];
                 $.each(data.results, function(){
-
-                    addChartData(chart, { y: parseFloat(this.Value), x: this.Time });
-
+                    ndata.push( { y: parseFloat(this.Value), x: this.Time });
                 });
-                
-                chart.render();
+                chart.data.series[0].data = ndata;
+                chart.data.series[1].data = [{x:parseInt(((Date.now()/1000) - timeframe)),y:0},{x:parseInt(((Date.now()/1000))), y:0}];
+                chart.update();
 
-                window.setTimeout(function(){ getCPU(chart, origin, count); }, 1000);
+
         });
     }
 
@@ -93,7 +114,7 @@ $(document).ready(function(){
     
     // Activate Functions
 
-    getCPU(lineCharts[0], 'laptop', '60');
+    getCPU(lineCharts[0], 'laptop', 60);
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 
