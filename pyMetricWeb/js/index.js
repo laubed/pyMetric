@@ -76,6 +76,8 @@ $(document).ready(function(){
 
                 });
                 
+                chart.render();
+
                 window.setTimeout(function(){ getCPU(chart, origin, count); }, 1000);
         });
     }
