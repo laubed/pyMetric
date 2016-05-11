@@ -111,7 +111,7 @@ $(document).ready(function(){
  	}
 
     function getCPU(origin, count){
-        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time", function(data){
+        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time&_t=" + Date.now(), function(data){
                 var currentData = lineCharts[0].getChartData();
                 //console.log(lineCharts[0]);
                 lineCharts[0].data.labels.length = 0;
@@ -119,7 +119,7 @@ $(document).ready(function(){
                 $.each(data.results, function(){
 
                     //if(checkObjectValue(this.Id, currentData.labels)){
-                        lineCharts[0].addChartData(0, { label: this.Id, value: parseFloat(this.Value) });
+                        lineCharts[0].addChartData(0, { label: this.Time, value: parseFloat(this.Value) });
                     //}
                 });
                 
@@ -139,7 +139,7 @@ $(document).ready(function(){
 
     // Activate Functions
 
-    getCPU('laptop', '20');
+    getCPU('laptop', '60');
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 
