@@ -26,10 +26,14 @@ body {
 }
 
 .dChartBox {
-  padding:0;
+  min-height: 250px;
 }
 
 .chart {
   width:250px;
   height:250px;
+}
+
+a.canvasjs-chart-credit {
+  display: none !important;
 }

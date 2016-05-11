@@ -4,97 +4,54 @@ var doughnutCharts = [];
 $(document).ready(function(){
   
   	// Chart Data
-  
-    var lineChartData = [];
     
-    lineChartData[0] = {
-        labels: [""],
-        datasets: [
-          {
-            label: "CPU-Auslastung",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [0]
-          }
-        ]
-    };
-    
-    var dChartData = [];
-    
-    dChartData[0] = {
-        labels: [
-            "Red",
-            "Green",
-            "Yellow"
-        ],
-        datasets: [
-            {
-                data: [300, 50, 100],
-                backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ],
-                hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ]
-            }]
-    };
-  
-    dChartData[1] = {
-        labels: [""],
-        datasets: [
-            {
-                data: [300, 50, 100],
-                backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ],
-                hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ]
-            }]
-    };
-  
-    // Genereate Charts
-    
-    lineCharts[0] = new Chart($('#lChart1').get(0).getContext('2d'), {
-        type: 'line',
-        data: lineChartData[0],
-        options: {
-            animation : false,
-            title: {
-                display: true,
-                position: "top",
-                text: "CPU-Auslastung"
-            },
-            scales: {
-                yAxes: [{
-                    type: "linear",
-                    ticks: {
-                        min: 0,
-                        max: 100,
-                        stepSize: 10
-                    }
-                }]
-            }
-        }
+    lineCharts[0] = new CanvasJS.Chart("lineChart1", {
+        animationEnabled: false,
+        data: [{
+            type: "spline",
+            dataPoints: [
+                { x: 10, y: 10 },
+                { x: 20, y: 12 },
+                { x: 30, y: 8 },
+                { x: 40, y: 14 },
+                { x: 50, y: 6 },
+                { x: 60, y: 24 },
+                { x: 70, y: 4 },
+                { x: 80, y: 10 }
+            ]
+        }]
     });
-  
-    doughnutCharts[0] = new Chart($('#dChart' + (0 + 1) ).get(0).getContext("2d"),{ type: 'doughnut', data: dChartData[0] });
-    doughnutCharts[1] = new Chart($('#dChart' + (1 + 1) ).get(0).getContext("2d"),{ type: 'doughnut', data: dChartData[1] });
 
+    lineCharts[0].render();
 
- 	// Functions
+    doughnutCharts[0] = new CanvasJS.Chart("doughnutChart1", {
+        animationEnabled: false,
+        toolTip: {
+            enabled: true,
+        },
+        data: [{
+            type: "doughnut",
+            dataPoints: [
+                {  y: 53.37 },
+                {  y: 35.0 },
+                {  y: 7 },
+                {  y: 2 },
+                {  y: 5 }
+            ]
+        }]
+    });
+
+   doughnutCharts[0].render();
+
+    // Functions
+
+    function addChartData(chart, data){
+        var length = chart.options.data[0].dataPoints.length;
+
+        chart.options.data[0].dataPoints[length] = data;
+
+        chart.render();
+    }
 
     var toBottom = true;
 	function scroll(){
@@ -110,20 +67,16 @@ $(document).ready(function(){
 		});
  	}
 
-    function getCPU(origin, count){
+    function getCPU(chart, origin, count){
         $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time&_t=" + Date.now(), function(data){
-                var currentData = lineCharts[0].getChartData();
-                //console.log(lineCharts[0]);
-                lineCharts[0].data.labels.length = 0;
-                lineCharts[0].data.datasets[0].data.length = 0;
+                chart.options.data[0].dataPoints = [];
                 $.each(data.results, function(){
 
-                    //if(checkObjectValue(this.Id, currentData.labels)){
-                        lineCharts[0].addChartData(0, { label: this.Time, value: parseFloat(this.Value) });
-                    //}
+                    addChartData(chart, { y: parseFloat(this.Value), x: this.Time });
+
                 });
                 
-                window.setTimeout(function(){ getCPU(origin, count); }, 1000);
+                window.setTimeout(function(){ getCPU(chart, origin, count); }, 1000);
         });
     }
 
@@ -136,10 +89,9 @@ $(document).ready(function(){
         return false;
     };
     
-
     // Activate Functions
 
-    getCPU('laptop', '60');
+    getCPU(lineCharts[0], 'laptop', '60');
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 
