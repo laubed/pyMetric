@@ -76,6 +76,16 @@ $(document).ready(function(){
                 display: true,
                 position: "top",
                 text: "CPU-Auslastung"
+            },
+            scales: {
+                yAxes: [{
+                    type: "linear",
+                    ticks: {
+                        min: 0,
+                        max: 100,
+                        stepSize: 10
+                    }
+                }]
             }
         }
     });
@@ -103,13 +113,13 @@ $(document).ready(function(){
     function getCPU(origin, count){
         $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&count=' + count + "&desc=False&order=time", function(data){
                 var currentData = lineCharts[0].getChartData();
-                console.log(lineCharts[0]);
+                //console.log(lineCharts[0]);
                 lineCharts[0].data.labels.length = 0;
                 lineCharts[0].data.datasets[0].data.length = 0;
                 $.each(data.results, function(){
 
                     //if(checkObjectValue(this.Id, currentData.labels)){
-                        lineCharts[0].addChartData(0, { label: this.Id, value: parseInt(this.Value) });
+                        lineCharts[0].addChartData(0, { label: this.Id, value: parseFloat(this.Value) });
                     //}
                 });
                 
