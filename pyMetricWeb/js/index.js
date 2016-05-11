@@ -20,7 +20,10 @@ $(document).ready(function(){
                     series: {
                     "timeframe":{
                         showLine: false,
-                        showPoint: false
+                        showPoint: false,
+                        lineSmooth: Chartist.Interpolation.none({
+                            fillHoles: false
+                          })
                     },
                     "cpu_usage":{
                         showLine: true,
@@ -114,7 +117,7 @@ $(document).ready(function(){
     
     // Activate Functions
 
-    getCPU(lineCharts[0], 'laptop', 60);
+    getCPU(lineCharts[0], 'laptop', 60*60);
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 

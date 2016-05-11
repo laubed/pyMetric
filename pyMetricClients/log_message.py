@@ -3,6 +3,7 @@ import sys
 import httplib
 import urllib
 import urllib2
+import time
 
 typedict = {"LOG": 0, "NOTICE": 1, "WARNING": 2, "ERROR": 3}
 
@@ -16,7 +17,8 @@ if len(sys.argv) == 5:
     url = 'http://%s/api/v1.0/messages' % endpoint
     data = urllib.urlencode({'origin': origin,
                              'message': message,
-                             'type': messagetype})
+                             'type': messagetype,
+                             'time': time.time()})
     urllib2.urlopen(url=url, data=data).read()
     sys.exit(0)
 else:
