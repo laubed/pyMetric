@@ -21,13 +21,13 @@ $(document).ready(function(){
                     "timeframe":{
                         showLine: false,
                         showPoint: false,
-                        lineSmooth: Chartist.Interpolation.none({
-                            fillHoles: false
-                          })
+                        showArea: true,
+                        lineSmooth: Chartist.Interpolation.none()
                     },
                     "cpu_usage":{
                         showLine: true,
-                        showPoint: false
+                        showPoint: false,
+                        lineSmooth: Chartist.Interpolation.none()
                     }
                     },
           axisX: {
@@ -41,7 +41,7 @@ $(document).ready(function(){
             low: 0,
             high: 100
           },
-          height: 400
+          height: 200
         });
     /*
 
@@ -76,28 +76,30 @@ $(document).ready(function(){
 
     var toBottom = true;
 	function scroll(){
-        var speed = 200; // px/s
-        var duration = ($(document).height()/speed)*1000
+        var speed = 30; // px/s
+
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
         var verticalCoordinate = toBottom ? $(document).height() - h: 0; //(-1 * $(document).height());
+        var duration = Math.abs((($(document).height() - h)/speed)*1000);
+        console.log(duration);
 
         toBottom = !toBottom;
 
 		$('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
-			setTimeout(scroll, 2000);
+			setTimeout(scroll, 3000);
 		});
  	}
 
     function getCPU(chart, origin, timeframe){
         $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
                 window.setTimeout(function(){ getCPU(chart, origin, timeframe); }, 1000);
-                console.log(chart);
                 ndata = [];
 
                 chart.data.series[1].data = [];
                 $.each(data.results, function(){
                     ndata.push( { y: parseFloat(this.Value), x: this.Time });
                 });
+
                 chart.data.series[0].data = ndata;
                 chart.data.series[1].data = [{x:parseInt(((Date.now()/1000) - timeframe)),y:0},{x:parseInt(((Date.now()/1000))), y:0}];
                 chart.update();

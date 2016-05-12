@@ -1,19 +1,28 @@
 import psycopg2
+import random
+
+from pyMetricServer import DEBUG
 from pyMetricServer.config import *
 import time
 
-database = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, user=DATABASE_USER, password=DATABASE_PASS,
-                            database=DATABASE_NAME)
-cursor = database.cursor();
-cursor.execute(
-    "CREATE TABLE IF NOT EXISTS log_messages (Id BIGSERIAL, Time INTEGER, Origin TEXT, Message TEXT, Type INTEGER);")
-cursor.execute(
-    "CREATE TABLE IF NOT EXISTS log_metrics (Id BIGSERIAL, Time INTEGER, Origin TEXT, Key TEXT, Value DOUBLE PRECISION);")
-database.commit()
-cursor.close()
 
+if not DEBUG:
+    database = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, user=DATABASE_USER, password=DATABASE_PASS,
+                                database=DATABASE_NAME)
+    cursor = database.cursor();
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS log_messages (Id BIGSERIAL, Time INTEGER, Origin TEXT, Message TEXT, Type INTEGER);")
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS log_metrics (Id BIGSERIAL, Time INTEGER, Origin TEXT, Key TEXT, Value DOUBLE PRECISION);")
+    database.commit()
+    cursor.close()
+else:
+    database = None
 
 def getMetric(timefrom=None, timeto=None, origin=None, key=None, count=None, order=None):
+    if DEBUG:
+        return getMetricDebug(timefrom, timeto, origin, key, count, order)
+
     results = []
     cursor = database.cursor()
 
@@ -75,6 +84,21 @@ def getMetric(timefrom=None, timeto=None, origin=None, key=None, count=None, ord
     cursor.close()
 
     return results
+
+
+def getMetricDebug(timefrom=None, timeto=None, origin=None, key=None, count=None, order=None):
+    results = []
+    for x in range((int(timeto)-int(timefrom))/20):
+        results.append({
+            "Id": str(random.randint(1, 2*1024*1024)),
+            "Time": str(time.time()-x*20),
+            "Origin": str(origin),
+            "Key": str(key),
+            "Value": str(random.randint(0, 100))
+        })
+    return results
+
+
 
 
 def getMessage(timefrom=None, timeto=None, origin=None, typ=None, count=None, order=None):

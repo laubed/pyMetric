@@ -1,4 +1,10 @@
 from flask import Flask, jsonify, make_response
+from sys import argv
+
+DEBUG = False
+if( len(argv) == 2 and argv[1] == "-debug"):
+    DEBUG = True
+
 
 app = Flask(__name__)
 
