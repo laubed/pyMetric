@@ -1,13 +1,20 @@
+"""
+Metric data handler
+
+Used to add entries to the database or fetch data from it.
+Only handles the requests get/post.
+Fetching or inserting data is done in the database module
+"""
+
 import time
 
-import math
 from flask import request
-from pyMetricServer import app
-from pyMetricServer.system.database import database, getMetric, insertMetric
-from werkzeug.exceptions import abort
-from pyMetricServer.system.decorators import crossdomain
 from flask.json import jsonify
-import time
+from werkzeug.exceptions import abort
+
+from pyMetricServer import app
+from pyMetricServer.system.database import getMetric, insertMetric
+from pyMetricServer.system.decorators import crossdomain
 
 
 @app.route("/api/v1.0/metrics/get")

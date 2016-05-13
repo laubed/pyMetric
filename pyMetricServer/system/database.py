@@ -1,3 +1,10 @@
+"""
+Database module
+
+used to fetch and insert data into the database.
+Constructs queries from arguments with most of them being optional.
+Prevent some SQL injection attacks (most of them are secured via psycopg2)
+"""
 import psycopg2
 import random
 
@@ -18,6 +25,7 @@ if not DEBUG:
     cursor.close()
 else:
     database = None
+
 
 def getMetric(timefrom=None, timeto=None, origin=None, key=None, count=None, order=None):
     if DEBUG:
