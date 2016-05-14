@@ -20,49 +20,52 @@
     <div class="col-md-6" id="content_left">
         <div class="panel panel-default">
             <!-- Messages Panel -->
-            <table class="table" id="message_table">
-                <thead>
-                    <tr>
-                        <th width="20%">Zeitpunkt</th>
-                        <th width="20%">Herkunft</th>
-                        <th width="55%">Nachricht</th>
-                        <th width="5%">Typ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- ko foreach: messages -->
-                    <tr data-bind="css: { 'alert-info': Type() == 1, 'alert-warning': Type() == 2, 'alert-danger': Type() == 3 }">
-                        <td><div data-bind="text: Time"></div></td>
-                        <td><div data-bind="text: Origin"></div></td>
-                        <td><div data-bind="text: Message"></div></td>
-                        <td><div data-bind="text: Type"></div></td>
-                    </tr>
-                    <!-- /ko -->
-                </tbody>
-            </table>
-            <script>
-                function MessageViewModel() {
-                    var self = this;
-                    self.messages = ko.observableArray();
+			<div class="panel-heading">Messages</div>
+			<div class="panel-body">
+				<table class="table" id="message_table">
+					<thead>
+						<tr>
+							<th width="20%">Zeitpunkt</th>
+							<th width="20%">Herkunft</th>
+							<th width="55%">Nachricht</th>
+							<th width="5%">Typ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- ko foreach: messages -->
+						<tr data-bind="css: { 'alert-info': Type() == 1, 'alert-warning': Type() == 2, 'alert-danger': Type() == 3 }">
+							<td><div data-bind="text: Time"></div></td>
+							<td><div data-bind="text: Origin"></div></td>
+							<td><div data-bind="text: Message"></div></td>
+							<td><div data-bind="text: Type"></div></td>
+						</tr>
+						<!-- /ko -->
+					</tbody>
+				</table>
+				<script>
+					function MessageViewModel() {
+						var self = this;
+						self.messages = ko.observableArray();
 
-                    function updateMessages() {
-                        $.getJSON("http://localhost:5000/api/v1.0/messages/get?count=20", function (data) {
-                            self.messages.removeAll();
-                            $.each(data.results, function() {
-                                self.messages.push({
-                                    Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
-                                    Origin: ko.observable(this.Origin),
-                                    Message: ko.observable(this.Message),
-                                    Type: ko.observable(this.Type, 10)
-                                });
-                            });
-                            setTimeout(updateMessages, 2000);
-                        });
-                    }
-                    updateMessages();
-                }
-                ko.applyBindings(new MessageViewModel(), $('#message_table')[0]); 
-            </script>
+						function updateMessages() {
+							$.getJSON("http://localhost:5000/api/v1.0/messages/get?count=20", function (data) {
+								self.messages.removeAll();
+								$.each(data.results, function() {
+									self.messages.push({
+										Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
+										Origin: ko.observable(this.Origin),
+										Message: ko.observable(this.Message),
+										Type: ko.observable(this.Type, 10)
+									});
+								});
+								setTimeout(updateMessages, 2000);
+							});
+						}
+						updateMessages();
+					}
+					ko.applyBindings(new MessageViewModel(), $('#message_table')[0]); 
+				</script>
+			</div>
         </div>
         <div style="clear: both"></div>
 
@@ -74,9 +77,14 @@
                 <div class="col-md-6 dChartBox" id="doughnutChart2"></div>
             </div>
         </div>
-        <div id="lineCharts">
-            <div class="panel panel-default" id="lineChart1"></div>
-        </div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Processor Usage</div>
+			<div class="panel-body">
+				<div id="lineCharts">
+					<div id="lineChart1"></div>
+				</div>
+			</div>
+		</div>
     </div>
 </div>
 </body>
