@@ -91,7 +91,7 @@ $(document).ready(function(){
  	}
 
     function getCPU(chart, origin, timeframe){
-        $.getJSON('http://localhost:5000/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
+        $.getJSON('http://' + API_ENDPOINT + '/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
                 window.setTimeout(function(){ getCPU(chart, origin, timeframe); }, 1000);
                 ndata = [];
 

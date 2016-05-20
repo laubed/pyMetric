@@ -1,0 +1,1 @@
+var API_ENDPOINT = "localhost:5000";

@@ -4,6 +4,7 @@
     <title>pyMetric Dashboard</title>
     <script src="js/jquery.js"></script>
     <script src="js/chartist.min.js"></script>
+	<script src="js/config.js"></script>
     <script src="js/index.js"></script>
     <script src="js/knockout.js"></script>
     <script src="js/moment.js"></script>
@@ -48,7 +49,7 @@
 						self.messages = ko.observableArray();
 
 						function updateMessages() {
-							$.getJSON("http://localhost:5000/api/v1.0/messages/get?count=20", function (data) {
+							$.getJSON("http://" + API_ENDPOINT + "/api/v1.0/messages/get?count=20", function (data) {
 								self.messages.removeAll();
 								$.each(data.results, function() {
 									self.messages.push({
