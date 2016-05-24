@@ -1,3 +1,4 @@
 .idea/
 *.pyc
-server/config.py
+pyMetricServer/config.py
+pyMetricWeb/js/config.js
