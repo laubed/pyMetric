@@ -91,7 +91,7 @@ $(document).ready(function(){
  	}
 
     function getCPU(chart, origin, timeframe){
-        $.getJSON('http://' + API_ENDPOINT + '/api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
+        $.getJSON(API_ENDPOINT + 'api/v1.0/metrics/get?origin=' + origin + '&key=cpu_usage&fromtime=' + parseInt(((Date.now()/1000) - timeframe)) + "&totime=" + parseInt(((Date.now()/1000))) + "&desc=False&order=time&_t=" + Date.now(), function(data){
                 window.setTimeout(function(){ getCPU(chart, origin, timeframe); }, 1000);
                 ndata = [];
 
@@ -108,7 +108,6 @@ $(document).ready(function(){
         });
     }
 
-
     function checkObjectValue(x, object){
         for(var i in object){
             if(x == this[i]) return true;
@@ -116,6 +115,30 @@ $(document).ready(function(){
 
         return false;
     };
+
+    function MessageViewModel() {
+        var self = this;
+        self.messages = ko.observableArray();
+
+        function updateMessages() {
+            $.getJSON(API_ENDPOINT + "api/v1.0/messages/get?count=20", function (data) {
+                self.messages.removeAll();
+                $.each(data.results, function() {
+                    self.messages.push({
+                        Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
+                        Origin: ko.observable(this.Origin),
+                        Message: ko.observable(this.Message),
+                        Type: ko.observable(this.Type, 10)
+                    });
+                });
+                setTimeout(updateMessages, 2000);
+            });
+        }
+
+        updateMessages();
+
+    }
+    ko.applyBindings(new MessageViewModel(), $('#message_table')[0]); 
     
     // Activate Functions
 
