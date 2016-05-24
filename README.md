@@ -9,7 +9,17 @@ pyMetric is a LAN Server/Service Monitoring solution optimized for ease of use a
 
 
 ### pyMetric/pyMetricServer ###
+The pyMetric Server serves all requests to put data in or pull data out of the database. You can either start it with the integrated development WSGI server simply by running the pyMetric.py script inside the pyMetricServer folder, or run it behind a real webserver like apache or nginx (Recommended for production use).
 
+There are currently 3 API Rest endpoints to get/fetch/update data:
+#### /api/v1.0/metrics/get ####
+// TODO
+
+#### /api/v1.0/messages/get ####
+// TODO
+
+#### /api/v1.0/cron ####
+// TODO
 
 ### pyMetric/pyMetricClients ###
 There are several client API scripts available to report data to the backend server. Use them on your clients.
