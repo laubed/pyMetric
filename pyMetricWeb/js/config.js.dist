@@ -1,1 +1,5 @@
 var API_ENDPOINT = "localhost:5000";
+
+// Charts
+
+addLineChart('lineChart1', 0, 'laptop', 60*60, 100, 0, 200, 'cpu_usage', 'timeframe'); // e.g. (chartDOMElementID, chartID, origin, timeframe, yMax, yMin, chartHeight, seriesName1, seriesName2);

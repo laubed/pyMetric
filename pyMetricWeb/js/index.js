@@ -5,81 +5,83 @@ $(document).ready(function(){
   
   	// Chart Data
     
-    lineCharts[0] = new Chartist.Line('#lineChart1', {
-                        series: [
-                            {
-                                name: "cpu_usage",
-                                data: []
-                            },
-                            {
-                                name: "timeframe",
-                                data: [{x:0},{x:0}]
-                            }
-                        ]
-                    }, {
-                    series: {
-                    "timeframe":{
-                        showLine: false,
-                        showPoint: false,
-                        showArea: true,
-                        lineSmooth: Chartist.Interpolation.none()
-                    },
-                    "cpu_usage":{
-                        showLine: true,
-                        showPoint: false,
-                        lineSmooth: Chartist.Interpolation.none()
-                    }
-                    },
-          axisX: {
-            type: Chartist.FixedScaleAxis,
-            divisor: 10,
-            labelInterpolationFnc: function(value) {
-              return moment(value*1000).fromNow();
-            }
-          },
-          axisY: {
-            low: 0,
-            high: 100
-          },
-          height: 200
-        });
-    /*
+    function addLineChart(chartDOMElementID, chartID, origin, timeframe, yMax, yMin, chartHeight, seriesName1, seriesName2){    
 
-    doughnutCharts[0] = new CanvasJS.Chart("doughnutChart1", {
-        animationEnabled: false,
-        toolTip: {
-            enabled: true,
-        },
-        data: [{
-            type: "doughnut",
-            dataPoints: [
-                {  y: 53.37 },
-                {  y: 35.0 },
-                {  y: 7 },
-                {  y: 2 },
-                {  y: 5 }
+        // TODO: create DOM automatical and sort by side. Instead of chartDOMElementID, the side as attribut.
+
+        // SeriesName1 == yAxis && SeriesName2 == xAxis
+
+        // Chart Config
+
+        var obj1 = {
+            series: [
+                {
+                    // name: "cpu_usage",
+                    name: seriesName1,
+                    data: []
+                },
+                {
+                    // name: "timeframe",
+                    name: seriesName2,
+                    data: [{x:0},{x:0}]
+                }
             ]
-        }]
-    });
+        };
 
-   doughnutCharts[0].render();
-    */
-    // Functions
+        var obj2 = {
 
-    function addChartData(chart, data){
-        var length = chart.options.data[0].dataPoints.length;
+            axisX: {
+                type: Chartist.FixedScaleAxis,
+                divisor: 10,
+                labelInterpolationFnc: function(value) {
+                    return moment(value*1000).fromNow();
+                }
+            },
 
-        chart.options.data[0].dataPoints[length] = data;
+            axisY: {
+                low: yMin,
+                high: yMax
+            },
 
-        chart.render();
+            height: chartHeight,
+
+            series: {
+
+            }
+
+        }
+
+        // e.g. obj2.series.cpu_usage: ...
+
+        obj2.series[seriesName1] = {
+            showLine: true,
+            showPoint: false,
+            lineSmooth: Chartist.Interpolation.none()
+        }
+
+        obj2.series[seriesName2] = {
+            showLine: false,
+            showPoint: false,
+            showArea: true,
+            lineSmooth: Chartist.Interpolation.none()
+        }
+            
+        // Chart Config End;
+
+        lineCharts[chartID] = new Chartist.Line('#' + chartDOMElementID, obj1, obj2);
+
+        getCPU(lineCharts[chartID], origin, timeframe); // e.g. getCPU(lineCharts[0], 'laptop', 60*60);
+
     }
+
+    // Functions
 
     var toBottom = true;
 	function scroll(){
         var speed = 30; // px/s
 
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        var verticalCoordinate = toBottom ? $(document).height() - h: 0; //(-1 * $(document).height());
+        var verticalCoordinate = toBottom ? $(document).height() - h: 0;
         var duration = Math.abs((($(document).height() - h)/speed)*1000);
         console.log(duration);
 
@@ -104,17 +106,8 @@ $(document).ready(function(){
                 chart.data.series[1].data = [{x:parseInt(((Date.now()/1000) - timeframe)),y:0},{x:parseInt(((Date.now()/1000))), y:0}];
                 chart.update();
 
-
         });
     }
-
-    function checkObjectValue(x, object){
-        for(var i in object){
-            if(x == this[i]) return true;
-        }
-
-        return false;
-    };
 
     function MessageViewModel() {
         var self = this;
@@ -140,11 +133,8 @@ $(document).ready(function(){
     }
     ko.applyBindings(new MessageViewModel(), $('#message_table')[0]); 
     
-    // Activate Functions
-
-    getCPU(lineCharts[0], 'laptop', 60*60);
+    // Init Functions
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
-
 
 });
