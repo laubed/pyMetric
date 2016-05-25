@@ -1,5 +1,6 @@
-var API_ENDPOINT = "localhost:5000";
+var API_ENDPOINT = "http://localhost:5000/";
 
 // Charts
-
-addLineChart('lineChart1', 0, 'laptop', 60*60, 100, 0, 200, 'cpu_usage', 'timeframe'); // e.g. (chartDOMElementID, chartID, origin, timeframe, yMax, yMin, chartHeight, seriesName1, seriesName2);
+// e.g.     (chartDOMElementID, chartID,    origin,             timeframe,  yMax,       yMin,   chartHeight,    seriesName1,    seriesName2);
+addLineChart('lineChart1',            0,  'laptop',                 60*60,   100,          0,           200,    'cpu_usage',    'timeframe');
+addLineChart('lineChart2',            0,  'monitoring.server.rgp',  60*60,   100,          0,           200,    'cpu_usage',    'timeframe');
