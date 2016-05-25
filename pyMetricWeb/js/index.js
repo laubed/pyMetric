@@ -137,4 +137,6 @@ $(document).ready(function(){
 
     setTimeout(scroll, 2000); // fix issue with website not populated with data
 
+    loadConfig();
+
 });
