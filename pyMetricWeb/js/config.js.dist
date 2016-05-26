@@ -5,6 +5,6 @@ function loadConfig(){
 
 	// e.g.     (chartDOMElementID, chartID,    origin,             timeframe,  yMax,       yMin,   chartHeight,    seriesName1,    seriesName2);
 	addLineChart('lineChart1',            0,  'laptop',                 60*60,   100,          0,           200,    'cpu_usage',    'timeframe');
-	addLineChart('lineChart2',            0,  'monitoring.server.rgp',  60*60,   100,          0,           200,    'cpu_usage',    'timeframe');
+	addLineChart('lineChart2',            1,  'monitoring.server.rgp',  60*60,   100,          0,           200,    'cpu_usage',    'timeframe');
 
 }
