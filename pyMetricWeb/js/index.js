@@ -10,7 +10,7 @@ $(document).ready(function(){
         self.messages = ko.observableArray();
 
         function updateMessages() {
-            $.getJSON(API_ENDPOINT + "api/v1.0/messages/get?count=20", function (data) {
+            $.getJSON(API_ENDPOINT + "api/v1.0/messages/get?count=20&_t=" + parseInt(((Date.now()/1000))) , function (data) {
                 self.messages.removeAll();
                 $.each(data.results, function() {
                     self.messages.push({
@@ -121,7 +121,8 @@ function scroll(){
     toBottom = !toBottom;
 
     $('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
-        setTimeout(scroll, 3000);
+        if(toBottom){ location.reload(); }
+	setTimeout(scroll, 3000);
     });
 }
 

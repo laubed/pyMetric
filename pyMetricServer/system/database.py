@@ -191,7 +191,7 @@ def insertMessage(time, origin, message, typ):
     cursor = database.cursor()
     cursor.execute(
         "INSERT INTO log_messages (Time, Origin, Message, Type) VALUES (%s, %s, %s, %s) RETURNING Id, Time, Origin, Message, Type",
-        (time, origin, message, typ));
+        (int(float(time)), origin, message, int(typ)));
     row = cursor.fetchone()
     cursor.close()
     database.commit()
