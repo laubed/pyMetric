@@ -39,24 +39,29 @@ $(document).ready(function(){
 
 // Functions
 
-function addLineChart(chartDOMElementID, chartID, origin, timeframe, yMax, yMin, chartHeight, seriesName1, seriesName2){
-
-    // TODO: create DOM automatical and sort by side. Instead of chartDOMElementID, the side as attribut.
+function addLineChart(DOMID, chartID, origin, timeframe, yMax, yMin, chartHeight, seriesName1, title, side){
 
     // SeriesName1 == yAxis && SeriesName2 == xAxis
+
+    if($('#' + DOMID).length == 0){
+
+        var DOM = "<div class='panel panel-default'><div class='panel-heading'>" + title + "</div><div class='panel-body'><div id='" + DOMID + "'><div></div></div>";
+
+        $('#content_' + side).append(DOM);
+
+    }
 
     // Chart Config
 
     var obj1 = {
         series: [
             {
-                // name: "cpu_usage",
+                // e.g. name: "cpu_usage",
                 name: seriesName1,
                 data: []
             },
             {
-                // name: "timeframe",
-                name: seriesName2,
+                name: 'timeframe',
                 data: [{x:0},{x:0}]
             }
         ]
@@ -93,7 +98,7 @@ function addLineChart(chartDOMElementID, chartID, origin, timeframe, yMax, yMin,
         lineSmooth: Chartist.Interpolation.none()
     }
 
-    obj2.series[seriesName2] = {
+    obj2.series['timeframe'] = {
         showLine: false,
         showPoint: false,
         showArea: true,
@@ -102,7 +107,7 @@ function addLineChart(chartDOMElementID, chartID, origin, timeframe, yMax, yMin,
             
     // Chart Config End;
 
-    lineCharts[chartID] = new Chartist.Line('#' + chartDOMElementID, obj1, obj2);
+    lineCharts[chartID] = new Chartist.Line('#' + DOMID, obj1, obj2);
 
     getCPU(lineCharts[chartID], origin, timeframe); // e.g. getCPU(lineCharts[0], 'laptop', 60*60);
 
@@ -116,13 +121,12 @@ function scroll(){
     var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     var verticalCoordinate = toBottom ? $(document).height() - h: 0;
     var duration = Math.abs((($(document).height() - h)/speed)*1000);
-    console.log(duration);
-
+   
     toBottom = !toBottom;
 
     $('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
         if(toBottom){ location.reload(); }
-	setTimeout(scroll, 3000);
+	    setTimeout(scroll, 3000);
     });
 }
 
