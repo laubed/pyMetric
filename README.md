@@ -78,7 +78,7 @@ There are several client API scripts available to report data to the backend ser
 
 ### Contributors ###
 * Sören Uhrbach <souhrbach@gmail.com> Frontend Developer
-* Daniel Laube <bitbucket@dlaube.de> <github@dlaube.de> Backend Developer
+* Daniel Laube <mail@dlaube.de> Backend Developer
 
 
 ### Credit ###
