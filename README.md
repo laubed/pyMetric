@@ -61,7 +61,8 @@ There are several client API scripts available to report data to the backend ser
 
 ### Prerequisites ###
 * PostgreSQL server
-* Python 2.7 with flask, jinja2, markupsafe, werkzeug, itsdangerous, psycopg2, psutil
+* Python 2.7 with flask, jinja2, markupsafe, werkzeug, itsdangerous, psycopg2, psutil   
+`pip install flask jinja2 markupsafe werkzeug itsdangerous psycopg2 psutil`
 * optional: web server (apache2,nginx,..) with wsgi module
 
 
