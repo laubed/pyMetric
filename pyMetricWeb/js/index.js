@@ -2,7 +2,8 @@ var lineCharts = [];
 var doughnutCharts = [];
 
 $(document).ready(function(){
-  
+
+
   	// Chart Data
     
     function MessageViewModel() {
@@ -10,15 +11,19 @@ $(document).ready(function(){
         self.messages = ko.observableArray();
 
         function updateMessages() {
-            $.getJSON(API_ENDPOINT + "api/v1.0/messages/get?count=20&_t=" + parseInt(((Date.now()/1000))) , function (data) {
+            $.getJSON(API_ENDPOINT + "api/v1.0/messages/get?count=20&_t=" + parseInt((Date.now()/1000)) , function (data) {
                 self.messages.removeAll();
                 $.each(data.results, function() {
-                    self.messages.push({
-                        Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
-                        Origin: ko.observable(this.Origin),
-                        Message: ko.observable(this.Message),
-                        Type: ko.observable(this.Type, 10)
-                    });
+                    var expires = new Date(this.Time*1000);
+                    expires.setMinutes(expires.getMinutes() + messageConfig.expires[this.Type]);
+                    if(new Date().getTime() <= expires.getTime()) {
+                        self.messages.push({
+                            Time: ko.observable(moment.unix(this.Time).format("HH:mm:ss")),
+                            Origin: ko.observable(this.Origin),
+                            Message: ko.observable(this.Message),
+                            Type: ko.observable(this.Type, 10)
+                        });
+                    }
                 });
                 setTimeout(updateMessages, 2000);
             });
@@ -88,7 +93,7 @@ function addLineChart(DOMID, chartID, origin, timeframe, yMax, yMin, chartHeight
 
         }
 
-    }
+    };
 
     // e.g. obj2.series.cpu_usage: ...
 
@@ -96,14 +101,14 @@ function addLineChart(DOMID, chartID, origin, timeframe, yMax, yMin, chartHeight
         showLine: true,
         showPoint: false,
         lineSmooth: Chartist.Interpolation.none()
-    }
+    };
 
     obj2.series['timeframe'] = {
         showLine: false,
         showPoint: false,
         showArea: true,
         lineSmooth: Chartist.Interpolation.none()
-    }
+    };
             
     // Chart Config End;
 
@@ -125,7 +130,7 @@ function scroll(){
     toBottom = !toBottom;
 
     $('body').animate({ scrollTop: verticalCoordinate}, duration, "linear", function(){
-        if(toBottom){ location.reload(); }
+       // if(toBottom){ location.reload(); }
 	    setTimeout(scroll, 3000);
     });
 }

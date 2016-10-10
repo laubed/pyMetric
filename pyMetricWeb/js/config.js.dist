@@ -1,10 +1,17 @@
 var API_ENDPOINT = "http://localhost:5000/";
-
+var messageConfig = {
+	expires: { // Ablaufzeit in Minuten
+		0: 1,
+		1: 5,
+		2: 10,
+		3: 60
+	}
+};
 
 function loadConfig(){
 
-	// e.g.     (DOMID, chartID,    origin,             timeframe,  yMax,       yMin,   chartHeight,    seriesName1,    title, 		side);
-	addLineChart('lineChart0', 0,  'laptop',                 60*60,   100,          0,           200,    'cpu_usage',    'Processor Usage (laptop)', 'right');
+	// e.g.     (DOMID, chartID,    origin, timeframe,  yMax,       yMin,   chartHeight,    seriesName1,    title, 		side);
+	addLineChart('lineChart0', 0,  'laptop',   60*60,   100,          0,           200,    'cpu_usage',    'Processor Usage (laptop)', 'right');
 	addLineChart('lineChart1', 1,  'server2',  60*60,   100,          0,           200,    'cpu_usage',    'Processor Usage (monitoring.server.rgp)', 'right');
 
 }
